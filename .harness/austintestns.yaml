@@ -1,0 +1,13 @@
+infrastructureDefinition:
+  name: austin-test-ns
+  identifier: austintestns
+  orgIdentifier: CSE_Labs
+  projectIdentifier: CSE_Lab_Project
+  environmentRef: csegcpcluster
+  deploymentType: Kubernetes
+  type: KubernetesDirect
+  spec:
+    connectorRef: csegcpcluster
+    namespace: austin-test-ns
+    releaseName: release-<+INFRA_KEY_SHORT_ID>
+  allowSimultaneousDeployments: false
