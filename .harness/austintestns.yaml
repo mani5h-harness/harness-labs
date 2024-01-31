@@ -10,4 +10,4 @@ infrastructureDefinition:
     connectorRef: csegcpcluster
     namespace: austin-test-ns
     releaseName: release-<+INFRA_KEY_SHORT_ID>
-  allowSimultaneousDeployments: false
+  allowSimultaneousDeployments: true
