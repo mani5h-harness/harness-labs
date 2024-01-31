@@ -1,0 +1,23 @@
+service:
+  name: prom-sample
+  identifier: promsample
+  serviceDefinition:
+    type: Kubernetes
+    spec:
+      manifests:
+        - manifest:
+            identifier: promsampleappyaml
+            type: K8sManifest
+            spec:
+              store:
+                type: Github
+                spec:
+                  connectorRef: Harness_Labs
+                  gitFetchType: Branch
+                  paths:
+                    - testFiles/prom-sample-app.yaml
+                  repoName: harness-labs-blue-green
+                  branch: main
+              skipResourceVersioning: false
+              enableDeclarativeRollback: false
+  gitOpsEnabled: false
