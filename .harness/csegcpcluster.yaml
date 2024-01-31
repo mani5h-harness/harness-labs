@@ -1,0 +1,8 @@
+environment:
+  name: cse-gcp-cluster
+  identifier: csegcpcluster
+  description: ""
+  tags: {}
+  type: PreProduction
+  orgIdentifier: CSE_Labs
+  projectIdentifier: CSE_Lab_Project
