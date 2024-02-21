@@ -3,7 +3,7 @@ replicas: 2
 
 image: ${artifact.metadata.image}
 dockercfg: ${artifact.source.dockerconfig}
-
+jobName: pi-test
 createNamespace: true
 namespace: ${serviceVariable.namespace}
 
