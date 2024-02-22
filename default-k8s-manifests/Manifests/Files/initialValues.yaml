@@ -4,7 +4,6 @@ replicas: 2
 image: ${artifact.metadata.image}
 dockercfg: ${artifact.source.dockerconfig}
 jobName: first-pi-test
-createNamespace: true
 staticNamespace: initial-namespace
 namespace: ${serviceVariable.namespace}
 
