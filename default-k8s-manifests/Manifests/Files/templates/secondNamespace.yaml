@@ -1,0 +1,7 @@
+# harness.io/skip-file-for-deploy
+{{- if .Values.createNamespace}}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{.Values.staticNamespace}}-2
+{{- end}}
