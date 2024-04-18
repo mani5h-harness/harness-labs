@@ -5,3 +5,4 @@ metadata:
 data:
   properties: |
     fake=configMap
+    fake2=configMap2
