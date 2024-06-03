@@ -3,7 +3,7 @@ replicas: 2
 
 image: ${artifact.metadata.image}
 dockercfg: ${artifact.source.dockerconfig}
-jobName: <+fake.expression>
+jobName: austin-test
 createNamespace: true
 staticNamespace: static-namespace
 namespace: ${serviceVariable.namespace}
