@@ -1,6 +1,6 @@
 # This example demonstrates a Rollout using the blue-green update strategy, which contains a manual
 # gate before promoting the new stack.
-apiVersion: argoproj.io/v1alpha1
+apiVersion: argoproj.io/v1alpha1SHOULDNTEVENWORKNOW
 kind: Rollout
 metadata:
   name: rollout-bluegreen
