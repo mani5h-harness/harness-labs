@@ -8,5 +8,5 @@ metadata:
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: {{.Values.staticNamespace}}-2
+  name: {{.Values.staticNamespace}}-{{.Values.testVar}}-2
 {{- end}}
