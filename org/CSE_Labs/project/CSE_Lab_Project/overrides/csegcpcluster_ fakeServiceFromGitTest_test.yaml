@@ -1,0 +1,10 @@
+overrides:
+  variables:
+    - name: test
+      type: String
+      value: test
+      required: false
+    - name: test2
+      type: String
+      value: test2
+      required: false
