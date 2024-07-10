@@ -1,0 +1,6 @@
+environment:
+  name: test-git-env2
+  identifier: testgitenv2
+  orgIdentifier: CSE_Labs
+  projectIdentifier: CSE_Lab_Project
+  type: PreProduction
