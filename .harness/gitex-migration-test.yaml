@@ -6,6 +6,32 @@ pipeline:
   tags: {}
   stages:
     - stage:
+        name: buildMe
+        identifier: buildMe
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: csegcpcluster
+              namespace: austin-test-ns
+              automountServiceAccountToken: true
+              nodeSelector: {}
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Run_1
+                  identifier: Run_1
+                  spec:
+                    connectorRef: account.AT_Docker
+                    image: library/nginx
+                    shell: Sh
+                    command: echo "hello world"
+    - stage:
         name: run
         identifier: run
         description: ""
@@ -33,10 +59,10 @@ pipeline:
                   template:
                     templateRef: echoNothing
                     versionLabel: "1"
-              - step:
-                  name: echoNothing2
-                  identifier: echoNothing2
-                  template:
-                    templateRef: echoNothing2
-                    versionLabel: "1"
         tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: Harness_Labs
+        repoName: harness-labs
+        build: <+input>
