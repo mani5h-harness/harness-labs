@@ -1,0 +1,14 @@
+inputSet:
+  name: PR Build Input Set
+  identifier: PR_Build_Input_Set
+  orgIdentifier: CSE_Labs
+  projectIdentifier: CSE_Lab_Project
+  pipeline:
+    identifier: gitexmigrationtest
+    properties:
+      ci:
+        codebase:
+          build:
+            type: tag
+            spec:
+              tag: <+trigger.prNumber>
