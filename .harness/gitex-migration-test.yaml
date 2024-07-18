@@ -59,6 +59,13 @@ pipeline:
                   template:
                     templateRef: echoNothing
                     versionLabel: "1"
+              - step:
+                  name: abc
+                  identifier: abc
+                  template:
+                    templateRef: echoNothing2
+                    versionLabel: "1"
+                    gitBranch: feature-template-migration
         tags: {}
   properties:
     ci:
