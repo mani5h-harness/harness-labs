@@ -27,4 +27,10 @@ pipeline:
                     environmentVariables: []
                     outputVariables: []
                   timeout: 10m
+              - step:
+                  name: echoNothing
+                  identifier: echoNothing
+                  template:
+                    templateRef: echoNothing
+                    versionLabel: "1"
         tags: {}
