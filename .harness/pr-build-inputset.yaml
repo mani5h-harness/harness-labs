@@ -1,5 +1,6 @@
 inputSet:
   name: PR Build Input Set
+  tags: {}
   identifier: PR_Build_Input_Set
   orgIdentifier: CSE_Labs
   projectIdentifier: CSE_Lab_Project
@@ -9,6 +10,6 @@ inputSet:
       ci:
         codebase:
           build:
-            type: tag
+            type: PR
             spec:
-              tag: <+trigger.prNumber>
+              number: <+trigger.prNumber>
