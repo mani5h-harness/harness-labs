@@ -33,4 +33,10 @@ pipeline:
                   template:
                     templateRef: echoNothing
                     versionLabel: "1"
+              - step:
+                  name: echoNothing2
+                  identifier: echoNothing2
+                  template:
+                    templateRef: echoNothing2
+                    versionLabel: "1"
         tags: {}
