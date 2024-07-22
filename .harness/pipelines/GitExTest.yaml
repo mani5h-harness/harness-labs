@@ -1,0 +1,22 @@
+pipeline:
+  name: GitExTest
+  identifier: GitExTest
+  projectIdentifier: CSE_Lab_Project
+  orgIdentifier: CSE_Labs
+  tags: {}
+  stages:
+    - stage:
+        name: custom
+        identifier: custom
+        description: ""
+        type: Custom
+        spec:
+          execution:
+            steps:
+              - step:
+                  name: echome
+                  identifier: echome
+                  template:
+                    templateRef: echoMeTemplate
+                    versionLabel: "1"
+        tags: {}
