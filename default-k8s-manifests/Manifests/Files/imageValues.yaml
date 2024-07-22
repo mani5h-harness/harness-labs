@@ -1,1 +1,1 @@
-image: "<+artifacts.primary.version>"
+image: "<+artifacts.primary.tag>"
