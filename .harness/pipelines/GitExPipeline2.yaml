@@ -32,8 +32,7 @@ pipeline:
           environment:
             environmentRef: gitexenvironment
             deployToAll: false
-            infrastructureDefinitions:
-              - identifier: gitexinfra
+            infrastructureDefinitions: <+input>
           execution:
             steps:
               - step:
