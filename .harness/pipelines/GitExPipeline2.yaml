@@ -1,0 +1,22 @@
+pipeline:
+  name: GitExPipeline2
+  identifier: GitExPipeline2
+  projectIdentifier: CSE_Lab_Project
+  orgIdentifier: CSE_Labs
+  tags: {}
+  stages:
+    - stage:
+        name: test
+        identifier: test
+        description: ""
+        type: Custom
+        spec:
+          execution:
+            steps:
+              - step:
+                  name: test
+                  identifier: test
+                  template:
+                    templateRef: echoMeTemplate2
+                    versionLabel: "1"
+        tags: {}
