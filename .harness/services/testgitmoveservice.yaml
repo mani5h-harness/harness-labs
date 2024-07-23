@@ -1,0 +1,27 @@
+service:
+  name: test-git-move-service
+  identifier: testgitmoveservice
+  serviceDefinition:
+    type: Kubernetes
+    spec:
+      manifests:
+        - manifest:
+            identifier: manifest
+            type: K8sManifest
+            spec:
+              store:
+                type: Github
+                spec:
+                  connectorRef: Harness_Labs
+                  gitFetchType: Branch
+                  paths:
+                    - default-k8s-manifests/Manifests/Files/templates/namespace.yaml
+                  repoName: harness-labs
+                  branch: main
+              valuesPaths:
+                - default-k8s-manifests/Manifests/Files/values.yaml
+              skipResourceVersioning: false
+              enableDeclarativeRollback: false
+  gitOpsEnabled: false
+  orgIdentifier: CSE_Labs
+  projectIdentifier: CSE_Lab_Project
