@@ -1,0 +1,9 @@
+service:
+  name: test-git-move-service
+  identifier: testgitmoveservice
+  serviceDefinition:
+    type: Kubernetes
+    spec: {}
+  gitOpsEnabled: false
+  orgIdentifier: CSE_Labs
+  projectIdentifier: CSE_Lab_Project
