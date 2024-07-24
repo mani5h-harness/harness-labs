@@ -19,3 +19,12 @@ spec:
         image: nginx:{{.Values.image}}
         ports:
         - containerPort: 80
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: another-fake-configmap
+data:
+  properties: |
+    fake=configMap
+    fake2=configMap2
