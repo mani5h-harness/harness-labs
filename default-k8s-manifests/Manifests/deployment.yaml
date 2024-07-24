@@ -28,3 +28,4 @@ data:
   properties: |
     fake=configMap
     fake2=configMap2
+    fake3=configMap3
