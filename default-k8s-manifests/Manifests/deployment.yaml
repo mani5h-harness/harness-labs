@@ -25,8 +25,11 @@ kind: ConfigMap
 metadata:
   name: another-fake-configmap
 data:
+  salesforce.api.send-case-submission-id-enabled: true
+  test.field: 123
   properties: |
     fake: configMap
     fake2: configMap2
     fake3: configMap3
     fake4: 123
+    
