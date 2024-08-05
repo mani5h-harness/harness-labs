@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    harness.io/direct-apply: true
+    harness.io/direct-apply: "true"
   name: nginx-deployment1
   labels:
     app: nginx
