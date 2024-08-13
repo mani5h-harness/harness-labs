@@ -1,6 +1,6 @@
 service:
   name: Rollback-Testing
-  identifier: Rollback_Testing
+  identifier: Rollback-Testing
   serviceDefinition:
     type: Kubernetes
     spec:
