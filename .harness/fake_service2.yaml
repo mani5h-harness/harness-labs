@@ -1,0 +1,5 @@
+service:
+  name: fake-service2
+  identifier: fake_service2
+  orgIdentifier: CSE_Labs
+  projectIdentifier: CSE_Lab_Project
