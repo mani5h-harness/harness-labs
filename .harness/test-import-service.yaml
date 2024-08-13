@@ -17,7 +17,7 @@ service:
               type: DockerRegistry
             - spec:
                 connectorRef: account.austinsandboxconnector
-                imagePath: austin-test-ecr
+                imagePath: test-fake
                 tag: <+input>.regex(v.*)
                 digest: ""
                 region: us-west-2
