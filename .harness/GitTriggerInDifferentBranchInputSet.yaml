@@ -1,0 +1,15 @@
+inputSet:
+  name: GitTriggerInDifferentBranchInputSet
+  identifier: GitTriggerInDifferentBranchInputSet
+  orgIdentifier: CSE_Labs
+  projectIdentifier: CSE_Lab_Project
+  pipeline:
+    identifier: GitTriggerInDifferentBranch
+    stages:
+      - stage:
+          identifier: echo
+          type: Custom
+          variables:
+            - name: test
+              type: String
+              value: test
