@@ -20,3 +20,5 @@ pipeline:
                   spec:
                     duration: 15m
         tags: {}
+        when:
+          pipelineStatus: All
