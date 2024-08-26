@@ -1,2 +1,2 @@
-image: ${artifact.metadata.image}
-tag: ${artifact.metadata.tag}
+image: <+artifact.image>
+tag: <+artifact.tag>
