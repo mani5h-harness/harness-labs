@@ -1,0 +1,2 @@
+image: ${artifact.metadata.image}
+tag: ${artifact.metadata.tag}
