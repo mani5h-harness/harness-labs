@@ -12,7 +12,7 @@ apiVersion: v2
 appVersion: 1.25.5
 dependencies:
 - name: common
-  repository: file://../common
+  repository: file://charts/common
   tags:
   - bitnami-common
   version: 2.x.x
