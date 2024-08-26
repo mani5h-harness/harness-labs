@@ -1,0 +1,57 @@
+service:
+  name: Rollback-Testing
+  identifier: Rollback-Testing
+  serviceDefinition:
+    type: Kubernetes
+    spec:
+      artifacts:
+        primary:
+          primaryArtifactRef: <+input>
+          sources:
+            - spec:
+                connectorRef: DockerTestk8
+                imagePath: library/nginx
+                tag: <+input>.regex(mainline-alpine\d+\.\d+-.*)
+                digest: ""
+              identifier: nginx
+              type: DockerRegistry
+            - spec:
+                connectorRef: account.austinsandboxconnector
+                imagePath: test-fake
+                tag: <+input>.regex(v.*)
+                digest: ""
+                region: us-west-2
+              identifier: test
+              type: Ecr
+      manifests:
+        - manifest:
+            identifier: deployment
+            type: K8sManifest
+            spec:
+              store:
+                type: Github
+                spec:
+                  connectorRef: Harness_Labs
+                  gitFetchType: Commit
+                  paths:
+                    - default-k8s-manifests/Manifests/deployment.yaml
+                    - default-k8s-manifests/Manifests/configMap.yaml
+                  repoName: harness-labs
+                  commitId: <+input>
+              valuesPaths: <+serviceVariables.valuePaths>.split(",")
+              skipResourceVersioning: false
+              enableDeclarativeRollback: false
+      variables:
+        - name: imagePath
+          type: String
+          description: ""
+          required: true
+          value: library/nginx
+        - name: valuePaths
+          type: String
+          description: ""
+          required: false
+          value: default-k8s-manifests/Manifests/Files/initialValues.yaml,default-k8s-manifests/Manifests/Files/imageValues.yaml
+  gitOpsEnabled: false
+  orgIdentifier: CSE_Labs
+  projectIdentifier: CSE_Lab_Project

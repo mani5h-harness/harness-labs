@@ -1,0 +1,24 @@
+service:
+  name: fake-service2
+  identifier: fake_service2
+  orgIdentifier: CSE_Labs
+  projectIdentifier: CSE_Lab_Project
+  serviceDefinition:
+    spec:
+      manifests:
+        - manifest:
+            identifier: main
+            type: K8sManifest
+            spec:
+              store:
+                type: Github
+                spec:
+                  connectorRef: Harness_Labs
+                  gitFetchType: Branch
+                  paths:
+                    - fakeyaml.yaml
+                  repoName: harness-labs
+                  branch: main
+              skipResourceVersioning: false
+              enableDeclarativeRollback: false
+    type: Kubernetes
