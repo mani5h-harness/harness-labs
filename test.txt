@@ -1,0 +1,1451 @@
+diff --git a/.harness/echoMeTemplate.yaml b/.harness/echoMeTemplate.yaml
+new file mode 100644
+index 0000000..1491dad
+--- /dev/null
++++ b/.harness/echoMeTemplate.yaml
+@@ -0,0 +1,21 @@
++template:
++  name: echoMeTemplate
++  identifier: echoMeTemplate
++  versionLabel: "1"
++  type: Step
++  projectIdentifier: CSE_Lab_Project
++  orgIdentifier: CSE_Labs
++  tags: {}
++  spec:
++    timeout: 10m
++    type: ShellScript
++    spec:
++      shell: Bash
++      executionTarget: {}
++      delegateSelectors: []
++      source:
++        type: Inline
++        spec:
++          script: echo "hello world"
++      environmentVariables: []
++      outputVariables: []
+diff --git a/.harness/pipelines/GitExPipeline2.yaml b/.harness/pipelines/GitExPipeline2.yaml
+new file mode 100644
+index 0000000..18fd0d2
+--- /dev/null
++++ b/.harness/pipelines/GitExPipeline2.yaml
+@@ -0,0 +1,61 @@
++pipeline:
++  name: GitExPipeline2
++  identifier: GitExPipeline2
++  projectIdentifier: CSE_Lab_Project
++  orgIdentifier: CSE_Labs
++  tags: {}
++  stages:
++    - stage:
++        name: test
++        identifier: test
++        description: ""
++        type: Custom
++        spec:
++          execution:
++            steps:
++              - step:
++                  name: test
++                  identifier: test
++                  template:
++                    templateRef: echoMeTemplate2
++                    versionLabel: "1"
++        tags: {}
++    - stage:
++        name: abc
++        identifier: abc
++        description: ""
++        type: Deployment
++        spec:
++          deploymentType: Kubernetes
++          service:
++            serviceRef: testgitmoveservice
++          environment:
++            environmentRef: gitexenvironment
++            deployToAll: false
++            infrastructureDefinitions:
++              - identifier: gitexinfra
++          execution:
++            steps:
++              - step:
++                  name: Rollout Deployment
++                  identifier: rolloutDeployment
++                  type: K8sRollingDeploy
++                  timeout: 10m
++                  spec:
++                    skipDryRun: false
++                    pruningEnabled: false
++            rollbackSteps:
++              - step:
++                  name: Rollback Rollout Deployment
++                  identifier: rollbackRolloutDeployment
++                  type: K8sRollingRollback
++                  timeout: 10m
++                  spec:
++                    pruningEnabled: false
++        tags: {}
++        failureStrategies:
++          - onFailure:
++              errors:
++                - AllErrors
++              action:
++                type: StageRollback
+diff --git a/.harness/pipelines/GitExTest.yaml b/.harness/pipelines/GitExTest.yaml
+new file mode 100644
+index 0000000..ecb9aae
+--- /dev/null
++++ b/.harness/pipelines/GitExTest.yaml
+@@ -0,0 +1,22 @@
++pipeline:
++  name: GitExTest
++  identifier: GitExTest
++  projectIdentifier: CSE_Lab_Project
++  orgIdentifier: CSE_Labs
++  tags: {}
++  stages:
++    - stage:
++        name: custom
++        identifier: custom
++        description: ""
++        type: Custom
++        spec:
++          execution:
++            steps:
++              - step:
++                  name: echome
++                  identifier: echome
++                  template:
++                    templateRef: echoMeTemplate
++                    versionLabel: "1"
++        tags: {}
+diff --git a/.harness/pipelines/PipelineFromGit.yaml b/.harness/pipelines/PipelineFromGit.yaml
+new file mode 100644
+index 0000000..e9bdede
+--- /dev/null
++++ b/.harness/pipelines/PipelineFromGit.yaml
+@@ -0,0 +1,30 @@
++pipeline:
++  name: PipelineFromGit
++  identifier: pipelinefromgit
++  projectIdentifier: CSE_Lab_Project
++  orgIdentifier: CSE_Labs
++  tags: {}
++  stages:
++    - stage:
++        name: test
++        identifier: test
++        description: ""
++        type: Custom
++        spec:
++          execution:
++            steps:
++              - step:
++                  type: ShellScript
++                  name: ShellScript_1
++                  identifier: ShellScript_1
++                  spec:
++                    shell: Bash
++                    executionTarget: {}
++                    source:
++                      type: Inline
++                      spec:
++                        script: echo "hello world fake"
++                    environmentVariables: []
++                    outputVariables: []
++                  timeout: 10m
++        tags: {}
+diff --git a/.harness/gitex-migration-test.yaml b/.harness/pipelines/gitex-migration-test.yaml
+similarity index 88%
+rename from .harness/gitex-migration-test.yaml
+rename to .harness/pipelines/gitex-migration-test.yaml
+index 95f5402..74e77b8 100644
+--- a/.harness/gitex-migration-test.yaml
++++ b/.harness/pipelines/gitex-migration-test.yaml
+@@ -59,6 +59,13 @@ pipeline:
+                   template:
+                     templateRef: echoNothing
+                     versionLabel: "1"
++              - step:
++                  name: abc
++                  identifier: abc
++                  template:
++                    templateRef: echoNothing2
++                    versionLabel: "1"
++                    gitBranch: feature-template-migration
+         tags: {}
+   properties:
+     ci:
+diff --git a/.harness/pipelines/test-gitex-again.yaml b/.harness/pipelines/test-gitex-again.yaml
+new file mode 100644
+index 0000000..ab15217
+--- /dev/null
++++ b/.harness/pipelines/test-gitex-again.yaml
+@@ -0,0 +1,30 @@
++pipeline:
++  name: test-gitex-again
++  identifier: testgitexagain
++  projectIdentifier: CSE_Lab_Project
++  orgIdentifier: CSE_Labs
++  tags: {}
++  stages:
++    - stage:
++        name: test
++        identifier: test
++        description: ""
++        type: Custom
++        spec:
++          execution:
++            steps:
++              - step:
++                  type: ShellScript
++                  name: ShellScript_1
++                  identifier: ShellScript_1
++                  spec:
++                    shell: Bash
++                    executionTarget: {}
++                    source:
++                      type: Inline
++                      spec:
++                        script: echo "hello world project"
++                    environmentVariables: []
++                    outputVariables: []
++                  timeout: 10m
++        tags: {}
+diff --git a/.harness/services/testgitmoveservice.yaml b/.harness/services/testgitmoveservice.yaml
+new file mode 100644
+index 0000000..a24c4be
+--- /dev/null
++++ b/.harness/services/testgitmoveservice.yaml
+@@ -0,0 +1,27 @@
++service:
++  name: test-git-move-service
++  identifier: testgitmoveservice
++  serviceDefinition:
++    type: Kubernetes
++    spec:
++      manifests:
++        - manifest:
++            identifier: manifest
++            type: K8sManifest
++            spec:
++              store:
++                type: Github
++                spec:
++                  connectorRef: Harness_Labs
++                  gitFetchType: Branch
++                  paths:
++                    - default-k8s-manifests/Manifests/Files/templates/namespace.yaml
++                  repoName: harness-labs
++                  branch: main
++              valuesPaths:
++                - default-k8s-manifests/Manifests/Files/values.yaml
++              skipResourceVersioning: false
++              enableDeclarativeRollback: false
++  gitOpsEnabled: false
++  orgIdentifier: CSE_Labs
++  projectIdentifier: CSE_Lab_Project
+diff --git a/.harness/templates/echoMeTemplate.yaml b/.harness/templates/echoMeTemplate.yaml
+new file mode 100644
+index 0000000..5dc31f5
+--- /dev/null
++++ b/.harness/templates/echoMeTemplate.yaml
+@@ -0,0 +1,21 @@
++template:
++  name: echoMeTemplate
++  identifier: echoMeTemplate
++  versionLabel: "1"
++  type: Step
++  projectIdentifier: CSE_Lab_Project
++  orgIdentifier: CSE_Labs
++  tags: {}
++  spec:
++    timeout: 10m
++    type: ShellScript
++    spec:
++      shell: Bash
++      executionTarget: {}
++      delegateSelectors: []
++      source:
++        type: Inline
++        spec:
++          script: echo "hello world testing"
++      environmentVariables: []
++      outputVariables: []
+diff --git a/.harness/templates/echoMeTemplate2.yaml b/.harness/templates/echoMeTemplate2.yaml
+new file mode 100644
+index 0000000..0ca92fc
+--- /dev/null
++++ b/.harness/templates/echoMeTemplate2.yaml
+@@ -0,0 +1,21 @@
++template:
++  name: echoMeTemplate2
++  identifier: echoMeTemplate2
++  versionLabel: "1"
++  type: Step
++  projectIdentifier: CSE_Lab_Project
++  orgIdentifier: CSE_Labs
++  tags: {}
++  spec:
++    timeout: 10m
++    type: ShellScript
++    spec:
++      shell: Bash
++      executionTarget: {}
++      delegateSelectors: []
++      source:
++        type: Inline
++        spec:
++          script: echo "hello world"
++      environmentVariables: []
++      outputVariables: []
+diff --git a/.harness/testUpdateGitTemplate_1.yaml b/.harness/testUpdateGitTemplate_1.yaml
+new file mode 100644
+index 0000000..e0a7334
+--- /dev/null
++++ b/.harness/testUpdateGitTemplate_1.yaml
+@@ -0,0 +1,19 @@
++template:
++  name: testUpdateGitTemplate
++  identifier: testUpdateGitTemplate
++  versionLabel: "1"
++  type: Step
++  tags: {}
++  spec:
++    timeout: 10m
++    type: ShellScript
++    spec:
++      shell: Bash
++      executionTarget: {}
++      delegateSelectors: []
++      source:
++        type: Inline
++        spec:
++          script: echo "hello"
++      environmentVariables: []
++      outputVariables: []
+diff --git a/README.md b/README.md
+index e9fd1e6..6f5437d 100644
+--- a/README.md
++++ b/README.md
+@@ -10,3 +10,4 @@ This repo (`harness-docs`) contains examples for Harness quickstarts and other d
+ - [Harness website](https://harness.io/)
+ 
+ afafa
++afafaaf
+diff --git a/default-k8s-manifests/Manifests/Files/imageValues.yaml b/default-k8s-manifests/Manifests/Files/imageValues.yaml
+index 757f0d5..f61b0ad 100644
+--- a/default-k8s-manifests/Manifests/Files/imageValues.yaml
++++ b/default-k8s-manifests/Manifests/Files/imageValues.yaml
+@@ -1 +1 @@
+-image: "<+artifact.image>"
++image: "<+artifacts.primary.tag>"
+diff --git a/default-k8s-manifests/Manifests/deployment.yaml b/default-k8s-manifests/Manifests/deployment.yaml
+index cfe4ddf..44c03ee 100644
+--- a/default-k8s-manifests/Manifests/deployment.yaml
++++ b/default-k8s-manifests/Manifests/deployment.yaml
+@@ -1,7 +1,7 @@
+ apiVersion: apps/v1
+ kind: Deployment
+ metadata:
+-  name: nginx-deploymentabc123ff
++  name: nginx-deployment
+   labels:
+     app: nginx
+ spec:
+@@ -16,6 +16,17 @@ spec:
+     spec:
+       containers:
+       - name: nginx
+-        image: {{.Values.image}}
++        image: nginx:{{.Values.image}}
+         ports:
+         - containerPort: 80
++---
++apiVersion: v1
++kind: ConfigMap
++metadata:
++  name: another-fake-configmap
++data:
++  c360.case-management.case-error-topic-name: "case-error-topic-qa"
++  c360.case-management.case-request-topic-name: "private.adc.self_service.case_request.qa"
++  c360.case-management.config.profile-activity-max-attempts: "4"
++  c360.case-management.config.sendgrid-confirmation-max-attempts: '2'
++    
+diff --git a/default-k8s-manifests/Manifests/doubledeployment.yaml b/default-k8s-manifests/Manifests/doubledeployment.yaml
+new file mode 100644
+index 0000000..be3af53
+--- /dev/null
++++ b/default-k8s-manifests/Manifests/doubledeployment.yaml
+@@ -0,0 +1,46 @@
++apiVersion: apps/v1
++kind: Deployment
++metadata:
++  annotations:
++    harness.io/direct-apply: "true"
++  name: nginx-deployment1
++  labels:
++    app: nginx
++spec:
++  replicas: 1
++  selector:
++    matchLabels:
++      app: nginx
++  template:
++    metadata:
++      labels:
++        app: nginx
++    spec:
++      containers:
++      - name: nginx
++        image: nginx:latest
++        ports:
++        - containerPort: 80
++---
++apiVersion: apps/v1
++kind: Deployment
++metadata:
++  name: nginx-deployment2
++  labels:
++    app: nginx
++spec:
++  replicas: 1
++  selector:
++    matchLabels:
++      app: nginx
++  template:
++    metadata:
++      labels:
++        app: nginx
++    spec:
++      containers:
++      - name: nginx
++        image: nginx:latest
++        ports:
++        - containerPort: 80
++    
+diff --git a/harness-cloud/Linux-amd/Ubuntu2204-Readme.md b/harness-cloud/Linux-amd/Ubuntu2204-Readme.md
+index 4a0f0b0..b3d2ede 100644
+--- a/harness-cloud/Linux-amd/Ubuntu2204-Readme.md
++++ b/harness-cloud/Linux-amd/Ubuntu2204-Readme.md
+@@ -1,5 +1,5 @@
+-# Ubuntu 22.04.2 LTS
+-- Linux kernel version: 5.19.0-1022-gcp
++# Ubuntu 22.04.1 LTS
++- Linux kernel version: 5.15.0-1018-gcp
+ - Image Version: dev
+ 
+ ## Installed Software
+@@ -9,13 +9,13 @@
+ - Clang-format 12.0.1, 13.0.1, 14.0.0
+ - Clang-tidy 12.0.1, 13.0.1, 14.0.0
+ - Dash 0.5.11+git20210903+057cd650a4ed-3build1
+-- GNU C++ 9.5.0, 10.4.0, 11.3.0
+-- GNU Fortran 9.5.0, 10.4.0, 11.3.0
+-- Julia 1.9.0
+-- Kotlin 1.8.21-release-380
++- GNU C++ 9.4.0, 10.3.0, 11.2.0
++- GNU Fortran 9.4.0, 10.3.0, 11.2.0
++- Julia 1.8.1
++- Kotlin 1.7.10-release-333
+ - Mono 6.12.0.182 (apt source repository: https://download.mono-project.com/repo/ubuntu stable-focal main)
+ - MSBuild 16.10.1.31701 (from /usr/lib/mono/msbuild/15.0/bin/MSBuild.dll)
+-- Node 16.20.0
++- Node 16.17.1
+ - Perl 5.34.0
+ - Python 3.10.6
+ - Python3 3.10.6
+@@ -23,16 +23,16 @@
+ 
+ ### Package Management
+ - cpan 1.64
+-- Helm 3.11.3
+-- Homebrew 4.0.17
+-- Miniconda 23.3.1
+-- Npm 8.19.4
+-- NuGet 6.3.1.1
++- Helm 3.10.0
++- Homebrew 3.6.3
++- Miniconda 4.12.0
++- Npm 8.15.0
++- NuGet 6.2.1.2
+ - Pip 22.0.2
+ - Pip3 22.0.2
+-- Pipx 1.2.0
++- Pipx 1.1.0
+ - RubyGems 3.3.5
+-- Vcpkg  (build from master \<ea222747b>)
++- Vcpkg  (build from master \<5f82fa45d>)
+ - Yarn 1.22.19
+ 
+ ##### Notes:
+@@ -51,118 +51,118 @@ to accomplish this.
+ | VCPKG_ROOT              | /usr/local/share/vcpkg |
+ 
+ ### Project Management
+-- Lerna 6.6.2
++- Lerna 5.5.2
+ 
+ ### Tools
+-- Ansible 2.14.5
++- Ansible 2.13.4
+ - apt-fast 1.9.12
+-- AzCopy 10.18.1 (available by `azcopy` and `azcopy10` aliases)
+-- Bazel 6.1.2
++- AzCopy 10.16.0 (available by `azcopy` and `azcopy10` aliases)
++- Bazel 5.3.1
+ - Bazelisk 1.13.2
+-- Bicep 0.17.1
++- Bicep 0.10.61
+ - Buildah 1.23.1
+-- CMake 3.26.3
+-- CodeQL Action Bundle 2.13.1
+-- Docker Amazon ECR Credential Helper 0.7.0
++- CMake 3.24.2
++- CodeQL Action Bundle 2.10.5
++- Docker Amazon ECR Credential Helper 0.6.0
+ - Docker Compose v1 1.29.2
+-- Docker Compose v2 v2.17.3
+-- Docker-Buildx v0.10.4
+-- Docker-Moby Client 23.0.6
+-- Docker-Moby Server 23.0.6
+-- Fastlane 2.212.2
+-- Git 2.40.1 (apt source repository: ppa:git-core/ppa)
+-- Git LFS 3.3.0 (apt source repository: https://packagecloud.io/install/repositories/github/git-lfs)
++- Docker Compose v2 v2.10.2
++- Docker-Buildx v0.9.1-docker
++- Docker-Moby Client 20.10.18
++- Docker-Moby Server 20.10.18
++- Fastlane 2.210.1
++- Git 2.37.3 (apt source repository: ppa:git-core/ppa)
++- Git LFS 3.2.0 (apt source repository: https://packagecloud.io/install/repositories/github/git-lfs)
+ - Git-ftp 1.6.0
+ - Haveged 1.9.14
+-- Heroku 8.1.3
++- Heroku 7.63.4
+ - jq 1.6
+-- Kind 0.18.0
+-- Kubectl 1.27.1
+-- Kustomize 5.0.2
+-- Leiningen 2.10.0
++- Kind 0.16.0
++- Kubectl 1.25.2
++- Kustomize 4.5.7
++- Leiningen 2.9.10
+ - MediaInfo 21.09
+ - Mercurial 6.1.1
+-- Minikube 1.30.1
+-- n 9.1.0
++- Minikube 1.27.0
++- n 9.0.0
+ - Newman 5.3.2
+-- nvm 0.39.3
+-- OpenSSL 3.0.2-0ubuntu1.9
+-- Packer 1.8.7
+-- Parcel 2.8.3
++- nvm 0.39.1
++- OpenSSL 3.0.2-0ubuntu1.6
++- Packer 1.8.3
++- Parcel 2.7.0
+ - Podman 3.4.4
+-- Pulumi 3.66.0
+-- R 4.3.0
++- Pulumi 3.40.2
++- R 4.2.1
+ - Skopeo 1.4.1
+ - Sphinx Open Source Search Server 2.2.11
+ - SVN 1.14.1
+-- Terraform 1.4.6
+-- yamllint 1.31.0
+-- yq v4.33.3
+-- zstd 1.5.5 (homebrew)
++- Terraform 1.3.0
++- yamllint 1.28.0
++- yq 4.27.5
++- zstd 1.5.2 (homebrew)
+ 
+ ### CLI Tools
+-- Alibaba Cloud CLI 3.0.163
+-- AWS CLI 2.11.18
+-- AWS CLI Session manager plugin 1.2.463.0
+-- AWS SAM CLI 1.82.0
+-- Azure CLI (azure-cli) 2.48.1 (installation method: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-linux?pivots=apt)
+-- Azure CLI (azure-devops) 0.26.0
+-- GitHub CLI 2.28.0
+-- Google Cloud SDK 428.0.0 (apt source repository: https://packages.cloud.google.com/apt)
++- Alibaba Cloud CLI 3.0.127
++- AWS CLI 2.7.35
++- AWS CLI Session manager plugin 1.2.339.0
++- AWS SAM CLI 1.57.0
++- Azure CLI (azure-cli) 2.40.0 (installation method: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-linux?pivots=apt)
++- Azure CLI (azure-devops) 0.25.0
++- GitHub CLI 2.16.1
++- Google Cloud SDK 403.0.0 (apt source repository: https://packages.cloud.google.com/apt)
+ - Hub CLI 2.14.2
+-- Netlify CLI 15.0.2
+-- OpenShift CLI 4.12.15
+-- ORAS CLI 1.0.0
+-- Vercel CLI 29.1.1
++- Netlify CLI 12.0.0
++- OpenShift CLI 4.11.6
++- ORAS CLI 0.15.0
++- Vercel CLI 28.4.4
+ 
+ ### Java
+ | Version             | Vendor          | Environment Variable |
+ | ------------------- | --------------- | -------------------- |
+-| 8.0.362+9           | Eclipse Temurin | JAVA_HOME_8_X64      |
+-| 11.0.19+7 (default) | Eclipse Temurin | JAVA_HOME_11_X64     |
+-| 17.0.7+7            | Eclipse Temurin | JAVA_HOME_17_X64     |
++| 8.0.345+1           | Eclipse Temurin | JAVA_HOME_8_X64      |
++| 11.0.16+1 (default) | Eclipse Temurin | JAVA_HOME_11_X64     |
++| 17.0.4+1            | Eclipse Temurin | JAVA_HOME_17_X64     |
+ 
+ ### GraalVM
+ | Version   | Environment variables |
+ | --------- | --------------------- |
+-| CE 22.3.2 | GRAALVM_11_ROOT       |
++| CE 22.2.0 | GRAALVM_11_ROOT       |
+ 
+ ### PHP
+ | Tool     | Version |
+ | -------- | ------- |
+-| PHP      | 8.1.18  |
+-| Composer | 2.5.5   |
+-| PHPUnit  | 8.5.33  |
++| PHP      | 8.1.10  |
++| Composer | 2.4.2   |
++| PHPUnit  | 8.5.30  |
+ ```
+     Both Xdebug and PCOV extensions are installed, but only Xdebug is enabled.
+ ```
+ ### Haskell
+ - Cabal 3.6.2.0
+-- GHC 9.6.1
+-- GHCup 
+-- Stack 2.9.3
++- GHC 9.4.2
++- GHCup 0.1.18.0
++- Stack 2.9.1
+ 
+ ### Rust Tools
+-- Cargo 1.69.0
+-- Rust 1.69.0
+-- Rustdoc 1.69.0
+-- Rustup 1.26.0
++- Cargo 1.64.0
++- Rust 1.64.0
++- Rustdoc 1.64.0
++- Rustup 1.25.1
+ 
+ #### Packages
+-- Bindgen 0.65.1
+-- Cargo audit 0.17.5
+-- Cargo clippy 0.1.69
+-- Cargo outdated 0.11.2
++- Bindgen 0.60.1
++- Cargo audit 0.17.0
++- Cargo clippy 0.1.64
++- Cargo outdated 0.11.1
+ - Cbindgen 0.24.3
+-- Rustfmt 1.5.2
++- Rustfmt 1.5.1
+ 
+ ### Browsers and Drivers
+-- Google Chrome 113.0.5672.92
+-- ChromeDriver 113.0.5672.63
+-- Chromium 113.0.5672.0
+-- Microsoft Edge 113.0.1774.35 (apt source repository: https://packages.microsoft.com/repos/edge)
+-- Microsoft Edge WebDriver 113.0.1774.35
+-- Selenium server 4.9.0
++- Google Chrome 106.0.5249.61
++- ChromeDriver 106.0.5249.21
++- Chromium 106.0.5235.0
++- Microsoft Edge 105.0.1343.53 (apt source repository: https://packages.microsoft.com/repos/edge)
++- Microsoft Edge WebDriver 105.0.1343.53
++- Selenium server 4.4.0
+ 
+ #### Environment variables
+ | Name              | Value                               |
+@@ -173,23 +173,23 @@ to accomplish this.
+ | SELENIUM_JAR_PATH | /usr/share/java/selenium-server.jar |
+ 
+ ### .NET Core SDK
+-- 6.0.408
++- 6.0.401
+ 
+ ### .NET tools
+-- nbgv 3.6.128+518ee610d6
++- nbgv 3.5.113+a908c6d9d2
+ 
+ ### Databases
+ - sqlite3 3.37.2
+ 
+ #### PostgreSQL
+-- PostgreSQL 14.7 (apt source repository: https://apt.postgresql.org/pub/repos/apt/)
++- PostgreSQL 14.5 (apt source repository: https://apt.postgresql.org/pub/repos/apt/)
+ - PostgreSQL Server (user:postgres)
+ 
+ ```
+     PostgreSQL service is disabled by default. Use the following command as a part of your job to start the service: 'sudo systemctl start postgresql.service'
+ ```
+ #### MySQL
+-- MySQL 8.0.33-0ubuntu0.22.04.1
++- MySQL 8.0.30-0ubuntu0.22.04.1
+ - MySQL Server (user:root password:root)
+ 
+ ```
+@@ -197,49 +197,49 @@ to accomplish this.
+ ```
+ #### MS SQL Server Client Tools
+ - sqlcmd 17.10.0001.1
+-- SqlPackage 16.1.8089.0
++- SqlPackage 16.0.6296.0
+ 
+ ### Cached Tools
+ #### Go
+ - 1.17.13
+-- 1.18.10
+-- 1.19.9
++- 1.18.6
++- 1.19.1
+ 
+ #### Node.js
+-- 14.21.3
+-- 16.20.0
++- 14.20.1
++- 16.17.1
+ 
+ #### PyPy
+ - 3.7.13 [PyPy 7.3.9]
+-- 3.8.16 [PyPy 7.3.11]
+-- 3.9.16 [PyPy 7.3.11]
++- 3.8.13 [PyPy 7.3.9]
++- 3.9.12 [PyPy 7.3.9]
+ 
+ #### Python
+-- 3.7.16
+-- 3.8.16
+-- 3.9.16
+-- 3.10.11
++- 3.7.14
++- 3.8.14
++- 3.9.14
++- 3.10.7
+ 
+ #### Ruby
+-- 3.1.4
++- 3.1.2
+ 
+ #### Environment variables
+ | Name            | Value                               | Architecture |
+ | --------------- | ----------------------------------- | ------------ |
+ | GOROOT_1_17_X64 | /opt/hostedtoolcache/go/1.17.13/x64 | x64          |
+-| GOROOT_1_18_X64 | /opt/hostedtoolcache/go/1.18.10/x64 | x64          |
+-| GOROOT_1_19_X64 | /opt/hostedtoolcache/go/1.19.9/x64  | x64          |
++| GOROOT_1_18_X64 | /opt/hostedtoolcache/go/1.18.6/x64  | x64          |
++| GOROOT_1_19_X64 | /opt/hostedtoolcache/go/1.19.1/x64  | x64          |
+ 
+ ### PowerShell Tools
+-- PowerShell 7.3.4
++- PowerShell 7.2.6
+ 
+ #### PowerShell Modules
+ | Module           | Version |
+ | ---------------- | ------- |
+ | MarkdownPS       | 1.9     |
+-| Microsoft.Graph  | 1.27.0  |
+-| Pester           | 5.4.1   |
+-| PSScriptAnalyzer | 1.21.0  |
++| Microsoft.Graph  | 1.11.1  |
++| Pester           | 5.3.3   |
++| PSScriptAnalyzer | 1.20.0  |
+ 
+ #### Az PowerShell Modules
+ - 7.5.0
+@@ -251,46 +251,46 @@ to accomplish this.
+ | nginx   | 1.18.0  | /etc/nginx/nginx.conf     | inactive      | 80         |
+ 
+ ### Android
+-| Package Name               | Version                                                                                                                                                                                                      |
+-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+-| Android Command Line Tools | 9.0                                                                                                                                                                                                          |
+-| Android Emulator           | 32.1.12                                                                                                                                                                                                      |
+-| Android SDK Build-tools    | 33.0.0 33.0.1 33.0.2<br>32.0.0<br>31.0.0<br>30.0.0 30.0.1 30.0.2 30.0.3<br>29.0.0 29.0.1 29.0.2 29.0.3<br>28.0.0 28.0.1 28.0.2 28.0.3<br>27.0.0 27.0.1 27.0.2 27.0.3                                         |
+-| Android SDK Platform-Tools | 34.0.1                                                                                                                                                                                                       |
+-| Android SDK Platforms      | android-33-ext5 (rev 1)<br>android-33-ext4 (rev 1)<br>android-33 (rev 2)<br>android-32 (rev 1)<br>android-31 (rev 1)<br>android-30 (rev 3)<br>android-29 (rev 5)<br>android-28 (rev 6)<br>android-27 (rev 3) |
+-| Android SDK Tools          | 26.1.1                                                                                                                                                                                                       |
+-| Android Support Repository | 47.0.0                                                                                                                                                                                                       |
+-| CMake                      | 3.10.2<br>3.18.1<br>3.22.1                                                                                                                                                                                   |
+-| Google Play services       | 49                                                                                                                                                                                                           |
+-| Google Repository          | 58                                                                                                                                                                                                           |
+-| NDK                        | 23.2.8568313<br>24.0.8215888<br>25.2.9519653 (default)                                                                                                                                                       |
+-| SDK Patch Applier v4       | 1                                                                                                                                                                                                            |
++| Package Name               | Version                                                                                                                                                |
++| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
++| Android Command Line Tools | 7.0                                                                                                                                                    |
++| Android Emulator           | 31.3.11                                                                                                                                                |
++| Android SDK Build-tools    | 33.0.0<br>32.0.0<br>31.0.0<br>30.0.0 30.0.1 30.0.2 30.0.3<br>29.0.0 29.0.1 29.0.2 29.0.3<br>28.0.0 28.0.1 28.0.2 28.0.3<br>27.0.0 27.0.1 27.0.2 27.0.3 |
++| Android SDK Platform-Tools | 33.0.3                                                                                                                                                 |
++| Android SDK Platforms      | android-33 (rev 2)<br>android-32 (rev 1)<br>android-31 (rev 1)<br>android-30 (rev 3)<br>android-29 (rev 5)<br>android-28 (rev 6)<br>android-27 (rev 3) |
++| Android SDK Tools          | 26.1.1                                                                                                                                                 |
++| Android Support Repository | 47.0.0                                                                                                                                                 |
++| CMake                      | 3.10.2<br>3.18.1<br>3.22.1                                                                                                                             |
++| Google Play services       | 49                                                                                                                                                     |
++| Google Repository          | 58                                                                                                                                                     |
++| NDK                        | 23.2.8568313<br>24.0.8215888<br>25.1.8937393 (default)                                                                                                 |
++| SDK Patch Applier v4       | 1                                                                                                                                                      |
+ 
+ #### Environment variables
+ | Name                    | Value                                       |
+ | ----------------------- | ------------------------------------------- |
+ | ANDROID_HOME            | /usr/local/lib/android/sdk                  |
+-| ANDROID_NDK             | /usr/local/lib/android/sdk/ndk/25.2.9519653 |
+-| ANDROID_NDK_HOME        | /usr/local/lib/android/sdk/ndk/25.2.9519653 |
+-| ANDROID_NDK_LATEST_HOME | /usr/local/lib/android/sdk/ndk/25.2.9519653 |
+-| ANDROID_NDK_ROOT        | /usr/local/lib/android/sdk/ndk/25.2.9519653 |
++| ANDROID_NDK             | /usr/local/lib/android/sdk/ndk/25.1.8937393 |
++| ANDROID_NDK_HOME        | /usr/local/lib/android/sdk/ndk/25.1.8937393 |
++| ANDROID_NDK_LATEST_HOME | /usr/local/lib/android/sdk/ndk/25.1.8937393 |
++| ANDROID_NDK_ROOT        | /usr/local/lib/android/sdk/ndk/25.1.8937393 |
+ | ANDROID_SDK_ROOT        | /usr/local/lib/android/sdk                  |
+ 
+ ### Cached Docker images
+ | Repository:Tag            | Digest                                                                   | Created    |
+ | ------------------------- | ------------------------------------------------------------------------ | ---------- |
+-| alpine:3.14               | sha256:0f2d5c38dd7a4f4f733e688e3a6733cb5ab1ac6e3cb4603a5dd564e5bfb80eed  | 2023-03-29 |
+-| alpine:3.15               | sha256:ecbdce53b2c2f43ab1b19418bcbd3f120a23547d9497030c8d978114512b883e  | 2023-03-29 |
+-| buildpack-deps:bullseye   | sha256:373587e78550f0918d16b793d1ead24c3f489a14c3af85da1096e2a683908e0c  | 2023-05-03 |
+-| buildpack-deps:buster     | sha256:bfefe2afb02a82c76d955f2c158b3b5aa96e7afcf262727e8f37ccdea60a39c5  | 2023-05-03 |
+-| debian:10                 | sha256:cca6bcced970f7634197ff1821aabb452024eb437958ab98bfc146ece96969c6  | 2023-05-02 |
+-| debian:11                 | sha256:63d62ae233b588d6b426b7b072d79d1306bfd02a72bff1fc045b8511cc89ee09  | 2023-05-02 |
+-| harness/drone-git:1.2.4   | sha256:46c434c0cabdf998ac31b5bf344da5f235e32b3dc4e27e7b18de20ffdb2fa059  | 2022-11-18 |
+-| moby/buildkit:latest      | sha256:d6fa89830c26919acba23c5cafa09df0c3ec1fbde20bb2a15ff349e0795241f4  | 2023-04-20 |
+-| node:14                   | sha256:a158d3b9b4e3fa813fa6c8c590b8f0a860e015ad4e59bbce5744d2f6fd8461aa  | 2023-04-12 |
+-| node:14-alpine            | sha256:434215b487a329c9e867202ff89e704d3a75e554822e07f3e0c0f9e606121b33  | 2023-03-29 |
+-| node:16                   | sha256:550f484fc5f314b575f5e397c9e2c71d7f218e59729fcda9ffa7ea1fc825dce7  | 2023-05-04 |
+-| node:16-alpine            | sha256:f1657204d3463bce763cefa5b25e48c28af6fe0cdb0f68b354f0f8225ef61be7  | 2023-03-29 |
++| alpine:3.14               | sha256:1ab24b3b99320975cca71716a7475a65d263d0b6b604d9d14ce08f7a3f67595c  | 2022-08-09 |
++| alpine:3.15               | sha256:69463fdff1f025c908939e86d4714b4d5518776954ca627cbeff4c74bcea5b22  | 2022-08-09 |
++| buildpack-deps:bullseye   | sha256:19683807e2587d777766573697f9488b0c88677ee06313e69197fbaa42e80319  | 2022-09-13 |
++| buildpack-deps:buster     | sha256:caa4ae706b59e2ca4b7786a44a08617447f81b516507a70a4ca43665b479c4e3  | 2022-09-13 |
++| debian:10                 | sha256:2f35b84014a5389e2a940113c51586bc067a05040ba181dee92c5a9fa9b15dcb  | 2022-09-13 |
++| debian:11                 | sha256:3e82b1af33607aebaeb3641b75d6e80fd28d36e17993ef13708e9493e30e8ff9  | 2022-09-13 |
++| harness/drone-git:1.2.4   | sha256:76b32f8950e13430401d88ded3ad2b1c64c81e41bf357429ee209a08b79ed11d  | 2022-08-30 |
++| moby/buildkit:latest      | sha256:67c9251f9f2e103e1ee489b6cead518b6d82607ef485d3f1505fc4095a55ebeb  | 2022-08-22 |
++| node:14                   | sha256:500c729bf9b75de8aee647d70b68dc16eb14991d74bbf033c5ffdb667bbef704  | 2022-09-26 |
++| node:14-alpine            | sha256:0a37794193aa27ba8af16a2da0998a3e0c551fcc4ebec2ce95b1615032daf820  | 2022-09-26 |
++| node:16                   | sha256:5968f50bda8ea8bdc65fd4208de287bbb25ca3ba81649494b1b6cf4b9203695e  | 2022-09-26 |
++| node:16-alpine            | sha256:88d9d8da697877a4a771a40e5cbc10a12c2ad959e82f3b0f36ef35635e17f693  | 2022-09-26 |
+ | plugins/acr:20.13.0       | sha256:33d42c4d47fbd788c4b9582c278530f2ab6693d46fab3684792c74f2fa46306f  | 2022-06-08 |
+ | plugins/artifactory:1.2.0 | sha256:bcb152efa455fed46279839d0015703dcd497ddb7e6079da192a9afe1a8864ac  | 2022-08-08 |
+ | plugins/cache:1.4.2       | sha256:d6da4686ec61ba2e8c367e033788f7621b2ad9b5110d8a809a4e25780d2edc77  | 2022-07-29 |
+@@ -299,93 +299,92 @@ to accomplish this.
+ | plugins/gcr:20.13.0       | sha256:ac5da469b97c72b3b20426d2faa43709c61c207bfde09bb9b74d274d758138a1  | 2022-06-08 |
+ | plugins/gcs:1.3.0         | sha256:292e53beae81c4467296540be8a2b6f0bbffdde97c0964c4cb256b8d10029053  | 2022-07-07 |
+ | plugins/s3:1.1.0          | sha256:3504b04c51f7c803f5534dd28bc8f02db57026d192899ef6a4017dfbf30c3d64  | 2022-07-07 |
+-| ubuntu:18.04              | sha256:8aa9c2798215f99544d1ce7439ea9c3a6dfd82de607da1cec3a8a2fae005931b  | 2023-03-08 |
+-| ubuntu:20.04              | sha256:db8bf6f4fb351aa7a26e27ba2686cf35a6a409f65603e59d4c203e58387dc6b3  | 2023-04-13 |
+-| ubuntu:22.04              | sha256:dfd64a3b4296d8c9b62aa3309984f8620b98d87e47492599ee20739e8eb54fbf  | 2023-04-25 |
++| ubuntu:18.04              | sha256:6fec50623d6d37b7f3c14c5b6fc36c73fd04aa8173d59d54dba00da0e7ac50ee  | 2022-09-06 |
++| ubuntu:20.04              | sha256:35ab2bf57814e9ff49e365efd5a5935b6915eede5c7f8581e9e1b85e0eecbe16  | 2022-09-01 |
++| ubuntu:22.04              | sha256:20fa2d7bb4de7723f542be5923b06c4d704370f0390e4ae9e1c833c8785644c1  | 2022-09-01 |
+ | zeronorth/sto_plugin:dev  | sha256:be7735ae41cf4016b5608b459712662e3c1a98c6d84e136a816fb26ad527ba02  | 2022-06-08 |
+ 
+ ### Installed apt packages
+-| Name                   | Version                             |
+-| ---------------------- | ----------------------------------- |
+-| acl                    | 2.3.1-1                             |
+-| aria2                  | 1.36.0-1                            |
+-| autoconf               | 2.71-2                              |
+-| automake               | 1:1.16.5-1.3                        |
+-| binutils               | 2.38-4ubuntu2.1                     |
+-| bison                  | 2:3.8.2+dfsg-1build1                |
+-| brotli                 | 1.0.9-2build6                       |
+-| build-essential        | 12.9ubuntu3                         |
+-| bzip2                  | 1.0.8-5build1                       |
+-| coreutils              | 8.32-4.1ubuntu1                     |
+-| curl                   | 7.81.0-1ubuntu1.10                  |
+-| dbus                   | 1.12.20-2ubuntu4.1                  |
+-| dnsutils               | 1:9.18.12-0ubuntu0.22.04.1          |
+-| dpkg                   | 1.21.1ubuntu2.1                     |
+-| fakeroot               | 1.28-1ubuntu1                       |
+-| file                   | 1:5.41-3                            |
+-| flex                   | 2.6.4-8build2                       |
+-| fonts-noto-color-emoji | 2.038-0ubuntu1                      |
+-| ftp                    | 20210827-4build1                    |
+-| gnupg2                 | 2.2.27-3ubuntu2.1                   |
+-| haveged                | 1.9.14-1ubuntu1                     |
+-| imagemagick            | 8:6.9.11.60+dfsg-1.3ubuntu0.22.04.3 |
+-| iproute2               | 5.15.0-1ubuntu2                     |
+-| iputils-ping           | 3:20211215-1                        |
+-| jq                     | 1.6-2.1ubuntu3                      |
+-| lib32z1                | 1:1.2.11.dfsg-2ubuntu9.2            |
+-| libc++-dev             | 1:14.0-55\~exp2                     |
+-| libc++abi-dev          | 1:14.0-55\~exp2                     |
+-| libcurl4               | 7.81.0-1ubuntu1.10                  |
+-| libgbm-dev             | 22.2.5-0ubuntu0.1\~22.04.1          |
+-| libgconf-2-4           | 3.2.6-7ubuntu2                      |
+-| libgsl-dev             | 2.7.1+dfsg-3                        |
+-| libgtk-3-0             | 3.24.33-1ubuntu2                    |
+-| libmagic-dev           | 1:5.41-3                            |
+-| libmagickcore-dev      | 8:6.9.11.60+dfsg-1.3ubuntu0.22.04.3 |
+-| libmagickwand-dev      | 8:6.9.11.60+dfsg-1.3ubuntu0.22.04.3 |
+-| libsecret-1-dev        | 0.20.5-2                            |
+-| libsqlite3-dev         | 3.37.2-2ubuntu0.1                   |
+-| libssl-dev             | 3.0.2-0ubuntu1.9                    |
+-| libtool                | 2.4.6-15build2                      |
+-| libunwind8             | 1.3.2-2build2                       |
+-| libxkbfile-dev         | 1:1.1.0-1build3                     |
+-| libxss1                | 1:1.2.3-1build2                     |
+-| locales                | 2.35-0ubuntu3.1                     |
+-| m4                     | 1.4.18-5ubuntu2                     |
+-| mediainfo              | 22.03-1                             |
+-| mercurial              | 6.1.1-1ubuntu1                      |
+-| net-tools              | 1.60+git20181103.0eebece-1ubuntu5   |
+-| netcat                 | 1.218-4ubuntu1                      |
+-| openssh-client         | 1:8.9p1-3ubuntu0.1                  |
+-| p7zip-full             | 16.02+dfsg-8                        |
+-| p7zip-rar              | 16.02-3build1                       |
+-| parallel               | 20210822+ds-2                       |
+-| pass                   | 1.7.4-5                             |
+-| patchelf               | 0.14.3-1                            |
+-| pkg-config             | 0.29.2-1ubuntu3                     |
+-| pollinate              | 4.33-3ubuntu2                       |
+-| python-is-python3      | 3.9.2-2                             |
+-| rpm                    | 4.17.0+dfsg1-4build1                |
+-| rsync                  | 3.2.7-0ubuntu0.22.04.2              |
+-| shellcheck             | 0.8.0-2                             |
+-| sphinxsearch           | 2.2.11-8                            |
+-| sqlite3                | 3.37.2-2ubuntu0.1                   |
+-| ssh                    | 1:8.9p1-3ubuntu0.1                  |
+-| sshpass                | 1.09-1                              |
+-| subversion             | 1.14.1-3ubuntu0.22.04.1             |
+-| sudo                   | 1.9.9-1ubuntu2.4                    |
+-| swig                   | 4.0.2-1ubuntu1                      |
+-| telnet                 | 0.17-44build1                       |
+-| texinfo                | 6.8-4build1                         |
+-| time                   | 1.9-0.1build2                       |
+-| tk                     | 8.6.11+1build2                      |
+-| tzdata                 | 2023c-0ubuntu0.22.04.1              |
+-| unzip                  | 6.0-26ubuntu3.1                     |
+-| upx                    | 3.96-3                              |
+-| wget                   | 1.21.2-2ubuntu1                     |
+-| xorriso                | 1.5.4-2                             |
+-| xvfb                   | 2:21.1.4-2ubuntu1.7\~22.04.1        |
+-| xz-utils               | 5.2.5-2ubuntu1                      |
+-| zip                    | 3.0-12build2                        |
+-| zsync                  | 0.6.2-3ubuntu1                      |
+-
++| Name                   | Version                           |
++| ---------------------- | --------------------------------- |
++| acl                    | 2.3.1-1                           |
++| aria2                  | 1.36.0-1                          |
++| autoconf               | 2.71-2                            |
++| automake               | 1:1.16.5-1.3                      |
++| binutils               | 2.38-3ubuntu1                     |
++| bison                  | 2:3.8.2+dfsg-1build1              |
++| brotli                 | 1.0.9-2build6                     |
++| build-essential        | 12.9ubuntu3                       |
++| bzip2                  | 1.0.8-5build1                     |
++| coreutils              | 8.32-4.1ubuntu1                   |
++| curl                   | 7.81.0-1ubuntu1.4                 |
++| dbus                   | 1.12.20-2ubuntu4                  |
++| dnsutils               | 1:9.18.1-1ubuntu1.2               |
++| dpkg                   | 1.21.1ubuntu2.1                   |
++| fakeroot               | 1.28-1ubuntu1                     |
++| file                   | 1:5.41-3                          |
++| flex                   | 2.6.4-8build2                     |
++| fonts-noto-color-emoji | 2.034-1                           |
++| ftp                    | 20210827-4build1                  |
++| gnupg2                 | 2.2.27-3ubuntu2.1                 |
++| haveged                | 1.9.14-1ubuntu1                   |
++| imagemagick            | 8:6.9.11.60+dfsg-1.3build2        |
++| iproute2               | 5.15.0-1ubuntu2                   |
++| iputils-ping           | 3:20211215-1                      |
++| jq                     | 1.6-2.1ubuntu3                    |
++| lib32z1                | 1:1.2.11.dfsg-2ubuntu9.1          |
++| libc++-dev             | 1:14.0-55\~exp2                   |
++| libc++abi-dev          | 1:14.0-55\~exp2                   |
++| libcurl4               | 7.81.0-1ubuntu1.4                 |
++| libgbm-dev             | 22.0.5-0ubuntu0.1                 |
++| libgconf-2-4           | 3.2.6-7ubuntu2                    |
++| libgsl-dev             | 2.7.1+dfsg-3                      |
++| libgtk-3-0             | 3.24.33-1ubuntu2                  |
++| libmagic-dev           | 1:5.41-3                          |
++| libmagickcore-dev      | 8:6.9.11.60+dfsg-1.3build2        |
++| libmagickwand-dev      | 8:6.9.11.60+dfsg-1.3build2        |
++| libsecret-1-dev        | 0.20.5-2                          |
++| libsqlite3-dev         | 3.37.2-2                          |
++| libssl-dev             | 3.0.2-0ubuntu1.6                  |
++| libtool                | 2.4.6-15build2                    |
++| libunwind8             | 1.3.2-2build2                     |
++| libxkbfile-dev         | 1:1.1.0-1build3                   |
++| libxss1                | 1:1.2.3-1build2                   |
++| locales                | 2.35-0ubuntu3.1                   |
++| m4                     | 1.4.18-5ubuntu2                   |
++| mediainfo              | 22.03-1                           |
++| mercurial              | 6.1.1-1ubuntu1                    |
++| net-tools              | 1.60+git20181103.0eebece-1ubuntu5 |
++| netcat                 | 1.218-4ubuntu1                    |
++| openssh-client         | 1:8.9p1-3                         |
++| p7zip-full             | 16.02+dfsg-8                      |
++| p7zip-rar              | 16.02-3build1                     |
++| parallel               | 20210822+ds-2                     |
++| pass                   | 1.7.4-5                           |
++| patchelf               | 0.14.3-1                          |
++| pkg-config             | 0.29.2-1ubuntu3                   |
++| pollinate              | 4.33-3ubuntu2                     |
++| python-is-python3      | 3.9.2-2                           |
++| rpm                    | 4.17.0+dfsg1-4build1              |
++| rsync                  | 3.2.3-8ubuntu3                    |
++| shellcheck             | 0.8.0-2                           |
++| sphinxsearch           | 2.2.11-8                          |
++| sqlite3                | 3.37.2-2                          |
++| ssh                    | 1:8.9p1-3                         |
++| sshpass                | 1.09-1                            |
++| subversion             | 1.14.1-3ubuntu0.22.04.1           |
++| sudo                   | 1.9.9-1ubuntu2                    |
++| swig                   | 4.0.2-1ubuntu1                    |
++| telnet                 | 0.17-44build1                     |
++| texinfo                | 6.8-4build1                       |
++| time                   | 1.9-0.1build2                     |
++| tk                     | 8.6.11+1build2                    |
++| tzdata                 | 2022c-0ubuntu0.22.04.0            |
++| unzip                  | 6.0-26ubuntu3                     |
++| upx                    | 3.96-3                            |
++| wget                   | 1.21.2-2ubuntu1                   |
++| xorriso                | 1.5.4-2                           |
++| xvfb                   | 2:21.1.3-2ubuntu2.1               |
++| xz-utils               | 5.2.5-2ubuntu1                    |
++| zip                    | 3.0-12build2                      |
++| zsync                  | 0.6.2-3ubuntu1                    |
+diff --git a/harness-cloud/macos-13-Readme.md b/harness-cloud/macos-13-Readme.md
+deleted file mode 100644
+index c856694..0000000
+--- a/harness-cloud/macos-13-Readme.md
++++ /dev/null
+@@ -1,206 +0,0 @@
+-
+-# macOS 13
+-- OS Version: macOS 13.3.1 (22E261)
+-- Kernel Version: Darwin 22.4.0
+-- Image Version: 20230419.1
+-## Installed Software
+-
+- ### Language and Runtime
+-- .NET Core SDK: 7.0.102, 7.0.203
+-- Bash 3.2.57(1)-release
+-- Clang/LLVM 14.0.0
+-- Clang/LLVM (Homebrew) 15.0.7 - available on `$(brew --prefix llvm@15)/bin/clang`
+-- GCC 11 (Homebrew GCC 11.3.0) - available by `gcc-11` alias
+-- GCC 12 (Homebrew GCC 12.2.0) - available by `gcc-12` alias
+-- GNU Fortran 11 (Homebrew GCC 11.3.0) - available by `gfortran-11` alias
+-- GNU Fortran 12 (Homebrew GCC 12.2.0) - available by `gfortran-12` alias
+-- Go command
+-- Julia 1.8.5
+-- Kotlin 1.8.20-release-327
+-- Perl 5.36.0
+-- PHP 8.2.5
+-- R 4.2.3
+-- Ruby 3.0.6p216
+-
+-### Package Management
+-- Bundler 2.4.12
+-- Carthage 0.39.0
+-- CocoaPods 1.12.1
+-- Composer 2.5.5
+-- Homebrew 4.0.14
+-- NPM 9.5.1
+-- NuGet command
+-- RubyGems 3.4.12
+-- Vcpkg 2023 (build from commit 48483c4fc)
+-- Yarn 1.22.19
+-
+-#### Environment variables
+-| Name                    | Value                  |
+-| ----------------------- | ---------------------- |
+-| CONDA                   |                        |
+-| VCPKG_INSTALLATION_ROOT | /usr/local/share/vcpkg |
+-
+-### Project Management
+- - Apache Ant 1.10.13
+-
+-### Utilities
+-- 7-Zip 17.05
+-- aria2 1.36.0
+-- azcopy 10.18.0
+-- bazel 6.1.2
+-- bazelisk 1.16.0
+-- bsdtar 3.5.3 - available by 'tar' alias
+-- Curl 8.0.1
+-- Git 2.40.0
+-- Git LFS 3.3.0
+-- GitHub CLI 2.27.0
+-- GNU Tar 1.34 - available by 'gtar' alias
+-- GNU Wget 1.21.3
+-- gpg (GnuPG) 2.4.0
+-- jq 1.6
+-- OpenSSL LibreSSL 3.3.6
+-- Packer 1.8.6
+-- Vagrant 2.3.4
+-- yq 4.33.3
+-- zstd 1.5.5
+-
+-### Tools
+-- AWS CLI 2.11.13
+-- AWS SAM CLI 1.80.0
+-- AWS Session Manager CLI 1.2.463.0
+-- Azure CLI 2.47.0
+-- Azure CLI (azure-devops) 0.26.0
+-- Bicep CLI 0.16.2
+-- Cabal 3.6.2.0
+-- Cmake 3.26.3
+-- CodeQL Action Bundles 2.12.5 2.12.6
+-- Fastlane 2.212.2
+-- GHC 9.6.1
+-- GHCup 0.1.19.2
+-- Stack 2.9.3
+-- SwiftFormat 0.51.7
+-- Xcode Command Line Tools 14.3.0.0.1.1679647830
+-
+-### Linters
+-- SwiftLint 0.51.0
+-
+-### Browsers
+-- Safari 16.4 (18615.1.26.11.23)
+-- SafariDriver 16.4 (18615.1.26.11.23)
+-- Google Chrome 112.0.5615.137
+-- ChromeDriver 112.0.5615.49
+-- Microsoft Edge 112.0.1722.48
+-- Microsoft Edge WebDriver 112.0.1722.48
+-- Mozilla Firefox 112.0.1
+-- geckodriver 0.33.0
+-- Selenium server 4.8.0
+-
+-#### Environment variables
+-| Name            | Value                                          |
+-| --------------- | ---------------------------------------------- |
+-| CHROMEWEBDRIVER | /usr/local/Caskroom/chromedriver/112.0.5615.49 |
+-| EDGEWEBDRIVER   | /usr/local/share/edge_driver                   |
+-| GECKOWEBDRIVER  | /usr/local/opt/geckodriver/bin                 |
+-
+-### Java
+-| Version             | Vendor          | Environment Variable |
+-| ------------------- | --------------- | -------------------- |
+-| 8.0.362+9           | Eclipse Temurin | JAVA_HOME_8_X64      |
+-| 11.0.18+10          | Eclipse Temurin | JAVA_HOME_11_X64     |
+-| 17.0.6+10 (default) | Eclipse Temurin | JAVA_HOME_17_X64     |
+-
+- ### Rust Tools
+-- Cargo 1.68.2
+-- Rust 1.68.2
+-- Rustdoc 1.68.2
+-- Rustup 1.25.2
+-
+-#### Packages
+-- Bindgen 0.65.1
+-- Cargo-audit 0.17.5
+-- Cargo-outdated 0.11.2
+-- Cbindgen 0.24.3
+-- Clippy 0.1.68
+-- Rustfmt 1.5.1-stable
+-
+-### PowerShell Tools
+-- PowerShell 7.2.11
+- 
+-#### PowerShell Modules
+-- Az: 9.6.0
+-- Pester: 5.4.1
+-- PSScriptAnalyzer: 1.21.0
+-
+-### Xcode
+-| Version        | Build   | Path                         |
+-| -------------- | ------- | ---------------------------- |
+-| 14.3           | 14E222b | /Applications/Xcode_14.3.app |
+-| 14.2 (default) | 14C18   | /Applications/Xcode_14.2.app |
+-| 14.1           | 14B47b  | /Applications/Xcode_14.1.app |
+-
+-#### Xcode Support Tools
+- - xcpretty 0.3.0
+-- xcversion 2.8.1
+-- 
+-#### Installed SDKs
+-| SDK                                                     | SDK Name                                      | Xcode Version |
+-| ------------------------------------------------------- | --------------------------------------------- | ------------- |
+-| macOS 13.0                                              | macosx13.0                                    | 14.1          |
+-| macOS 13.1                                              | macosx13.1                                    | 14.2          |
+-| macOS 13.3                                              | macosx13.3                                    | 14.3          |
+-| iOS 16.1                                                | iphoneos16.1                                  | 14.1          |
+-| iOS 16.2                                                | iphoneos16.2                                  | 14.2          |
+-| iOS 16.4                                                | iphoneos16.4                                  | 14.3          |
+-| Simulator - iOS 16.1                                    | iphonesimulator16.1                           | 14.1          |
+-| Simulator - iOS 16.2                                    | iphonesimulator16.2                           | 14.2          |
+-| Simulator - iOS 16.4                                    | iphonesimulator16.4                           | 14.3          |
+-| tvOS 16.1                                               | appletvos16.1                                 | 14.1, 14.2    |
+-| tvOS 16.4                                               | appletvos16.4                                 | 14.3          |
+-| Simulator - tvOS 16.1                                   | appletvsimulator16.1                          | 14.1, 14.2    |
+-| Simulator - tvOS 16.4                                   | appletvsimulator16.4                          | 14.3          |
+-| watchOS 9.1                                             | watchos9.1                                    | 14.1, 14.2    |
+-| watchOS 9.4                                             | watchos9.4                                    | 14.3          |
+-| Simulator - watchOS 9.1                                 | watchsimulator9.1                             | 14.1, 14.2    |
+-| Simulator - watchOS 9.4                                 | watchsimulator9.4                             | 14.3          |
+-| Asset Runtime SDK for macOS hosts targeting watchOS 9.4 | assetruntime.host.macosx.target.watchos9.4    | 14.3          |
+-| Asset Runtime SDK for macOS hosts targeting tvOS 16.4   | assetruntime.host.macosx.target.appletvos16.4 | 14.3          |
+-| Asset Runtime SDK for macOS hosts targeting iOS 16.4    | assetruntime.host.macosx.target.iphoneos16.4  | 14.3          |
+-| DriverKit 22.1                                          | driverkit22.1                                 | 14.1          |
+-| DriverKit 22.2                                          | driverkit22.2                                 | 14.2          |
+-| DriverKit 22.4                                          | driverkit22.4                                 | 14.3          |
+-
+-#### Installed Simulators
+-| OS          | Xcode Version        | Simulators                                                                                                                                                                                                                                                                                                                                                           |
+-| ----------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+-| iOS 16.1    | 14.1                 | iPhone 14<br>iPhone 14 Plus<br>iPhone 14 Pro<br>iPhone 14 Pro Max<br>iPhone SE (3rd generation)<br>iPad (10th generation)<br>iPad Air (5th generation)<br>iPad mini (6th generation)<br>iPad Pro (11-inch) (4th generation)<br>iPad Pro (12.9-inch) (6th generation)                                                                                                 |
+-| iOS 16.2    | 14.2                 | iPhone 14<br>iPhone 14 Plus<br>iPhone 14 Pro<br>iPhone 14 Pro Max<br>iPhone SE (3rd generation)<br>iPad (10th generation)<br>iPad Air (5th generation)<br>iPad mini (6th generation)<br>iPad Pro (11-inch) (4th generation)<br>iPad Pro (12.9-inch) (6th generation)                                                                                                 |
+-| iOS 16.4    | 14.3                 | iPhone 14<br>iPhone 14 Plus<br>iPhone 14 Pro<br>iPhone 14 Pro Max<br>iPhone SE (3rd generation)<br>iPad (10th generation)<br>iPad Air (5th generation)<br>iPad mini (6th generation)<br>iPad Pro (11-inch) (4th generation)<br>iPad Pro (12.9-inch) (6th generation)                                                                                                 |
+-| tvOS 16.1   | 14.1<br>14.2<br>14.3 | Apple TV<br>Apple TV 4K (3rd generation)<br>Apple TV 4K (3rd generation) (at 1080p)                                                                                                                                                                                                                                                                                  |
+-| tvOS 16.4   | 14.1<br>14.2<br>14.3 | Apple TV<br>Apple TV 4K (3rd generation)<br>Apple TV 4K (3rd generation) (at 1080p)                                                                                                                                                                                                                                                                                  |
+-| watchOS 9.1 | 14.1<br>14.2<br>14.3 | Apple Watch SE (40mm) (2nd generation)<br>Apple Watch SE (44mm) (2nd generation)<br>Apple Watch Series 5 (40mm)<br>Apple Watch Series 5 (44mm)<br>Apple Watch Series 6 (40mm)<br>Apple Watch Series 6 (44mm)<br>Apple Watch Series 7 (41mm)<br>Apple Watch Series 7 (45mm)<br>Apple Watch Series 8 (41mm)<br>Apple Watch Series 8 (45mm)<br>Apple Watch Ultra (49mm) |
+-| watchOS 9.4 | 14.1<br>14.2<br>14.3 | Apple Watch SE (40mm) (2nd generation)<br>Apple Watch SE (44mm) (2nd generation)<br>Apple Watch Series 5 (40mm)<br>Apple Watch Series 5 (44mm)<br>Apple Watch Series 6 (40mm)<br>Apple Watch Series 6 (44mm)<br>Apple Watch Series 7 (41mm)<br>Apple Watch Series 7 (45mm)<br>Apple Watch Series 8 (41mm)<br>Apple Watch Series 8 (45mm)<br>Apple Watch Ultra (49mm) |
+-
+-### Android
+-| Package Name               | Version                                                                                                                                                                                                      |
+-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+-| Android Command Line Tools | 8.0                                                                                                                                                                                                          |
+-| Android Emulator           | 32.1.12                                                                                                                                                                                                      |
+-| Android SDK Build-tools    | 33.0.0 33.0.1 33.0.2<br>32.0.0<br>31.0.0<br>30.0.0 30.0.1 30.0.2 30.0.3<br>29.0.0 29.0.1 29.0.2 29.0.3<br>28.0.0 28.0.1 28.0.2 28.0.3<br>27.0.0 27.0.1 27.0.2 27.0.3                                         |
+-| Android SDK Platforms      | android-33-ext5 (rev 1)<br>android-33-ext4 (rev 1)<br>android-33 (rev 2)<br>android-32 (rev 1)<br>android-31 (rev 1)<br>android-30 (rev 3)<br>android-29 (rev 5)<br>android-28 (rev 6)<br>android-27 (rev 3) |
+-| Android SDK Platform-Tools | 34.0.1                                                                                                                                                                                                       |
+-| Android Support Repository | 47.0.0                                                                                                                                                                                                       |
+-| CMake                      | 3.18.1<br>3.22.1                                                                                                                                                                                             |
+-| Google Play services       | 49                                                                                                                                                                                                           |
+-| Google Repository          | 58                                                                                                                                                                                                           |
+-| NDK                        | 23.2.8568313<br>24.0.8215888<br>25.2.9519653 (default)                                                                                                                                                       |
+-| SDK Patch Applier v4       | 1                                                                                                                                                                                                            |
+-
+-#### Environment variables
+-| Name                    | Value                                              |
+-| ----------------------- | -------------------------------------------------- |
+-| ANDROID_HOME            | /Users/runner/Library/Android/sdk                  |
+-| ANDROID_NDK             | /Users/runner/Library/Android/sdk/ndk/25.2.9519653 |
+-| ANDROID_NDK_HOME        | /Users/runner/Library/Android/sdk/ndk/25.2.9519653 |
+-| ANDROID_NDK_LATEST_HOME | /Users/runner/Library/Android/sdk/ndk/25.2.9519653 |
+-| ANDROID_NDK_ROOT        | /Users/runner/Library/Android/sdk/ndk/25.2.9519653 |
+-| ANDROID_SDK_ROOT        | /Users/runner/Library/Android/sdk                  |
+diff --git a/harness-cloud/macos-14-Readme.md b/harness-cloud/macos-14-Readme.md
+new file mode 100644
+index 0000000..f4ce256
+--- /dev/null
++++ b/harness-cloud/macos-14-Readme.md
+@@ -0,0 +1,160 @@
++# macOS 14
++- OS Version: macOS 14.2.1 (23C71)
++- Kernel Version: Darwin 23.2.0
++- Image Version: 12.123
++
++## Installed Software
++
++### Language and Runtime
++- .NET Core SDK: 7.0.102, 7.0.202, 7.0.306, 7.0.405, 8.0.101
++- Bash 3.2.57(1)-release
++- Clang/LLVM 15.0.0
++- Clang/LLVM (Homebrew) 15.0.7 - available on `$(brew --prefix llvm@15)/bin/clang`
++- GCC 11 (Homebrew GCC 11.4.0) - available by `gcc-11` alias
++- GCC 12 (Homebrew GCC 12.3.0) - available by `gcc-12` alias
++- GCC 13 (Homebrew GCC 13.2.0) - available by `gcc-13` alias
++- GNU Fortran 11 (Homebrew GCC 11.4.0) - available by `gfortran-11` alias
++- GNU Fortran 12 (Homebrew GCC 12.3.0) - available by `gfortran-12` alias
++- GNU Fortran 13 (Homebrew GCC 13.2.0) - available by `gfortran-13` alias
++- Julia 1.10.0
++- Kotlin 1.9.22-release-704
++- Mono 6.12.0.188
++- Node.js 18.19.0
++- Perl 5.38.2
++- R 4.3.2
++- Ruby 3.0.6p216
++
++### Package Management
++- Bundler 2.5.4
++- Carthage 0.39.1
++- CocoaPods 1.14.3
++- Homebrew 4.2.3
++- NPM 10.2.3
++- NuGet 6.3.1.1
++- RubyGems 3.5.4
++- Yarn 1.22.19
++
++### Project Management
++- Apache Ant 1.10.14
++- Apache Maven 3.9.6
++- Gradle 8.5
++
++### Utilities
++- 7-Zip 17.05
++- aria2 1.37.0
++- azcopy 10.21.2
++- bazelisk 1.19.0
++- bsdtar 3.5.3 - available by 'tar' alias
++- Curl 8.4.0
++- Git 2.43.0
++- Git LFS 3.4.1
++- GitHub CLI 2.42.0
++- GNU Tar 1.35 - available by 'gtar' alias
++- GNU Wget 1.21.4
++- gpg (GnuPG) 2.4.3
++- jq 1.7.1
++- OpenSSL 1.1.1w  11 Sep 2023
++- Packer 1.9.4
++- pkg-config 0.29.2
++- yq 4.40.5
++- zstd 1.5.5
++
++### Tools
++- AWS CLI 2.15.10
++- AWS SAM CLI 1.107.0
++- AWS Session Manager CLI 1.2.553.0
++- Azure CLI 2.56.0
++- Azure CLI (azure-devops) 0.26.0
++- Bicep CLI 0.24.24
++- Cmake 3.28.1
++- CodeQL Action Bundle 2.15.5
++- Fastlane 2.219.0
++- SwiftFormat 0.53.0
++- Xcbeautify 1.4.0
++- Xcode Command Line Tools 15.1.0.0.1.1700200546
++- Xcodes 1.4.1
++
++### Linters
++
++### Browsers
++- Safari 17.2.1 (19617.1.17.11.12)
++- SafariDriver 17.2.1 (19617.1.17.11.12)
++- Google Chrome 120.0.6099.216
++- Google Chrome for Testing 120.0.6099.109
++- ChromeDriver 120.0.6099.109
++- Selenium server 4.16.1
++
++#### Environment variables
++| Name            | Value                                   |
++| --------------- | --------------------------------------- |
++| CHROMEWEBDRIVER | /usr/local/share/chromedriver-mac-arm64 |
++| EDGEWEBDRIVER   |                                         |
++| GECKOWEBDRIVER  |                                         |
++
++### Java
++| Version               | Environment Variable |
++| --------------------- | -------------------- |
++| 11.0.21+9             | JAVA_HOME_11_arm64   |
++| 17.0.9+9              | JAVA_HOME_17_arm64   |
++| 21.0.1+12.0 (default) | JAVA_HOME_21_arm64   |
++
++### PowerShell Tools
++- PowerShell 7.2.18
++
++#### PowerShell Modules
++- Az: 11.2.0
++- Pester: 5.5.0
++- PSScriptAnalyzer: 1.21.0
++
++### Xcode
++| Version        | Build   | Path                         |
++|----------------|---------|------------------------------|
++| 15.1 (default) | 15C65   | /Applications/Xcode_15.1.app |
++| 15.2           | 15C500b | /Applications/Xcode_15.2.app |
++
++#### Xcode Support Tools
++- xcpretty 0.3.0
++
++#### Installed SDKs
++| SDK                      | SDK Name             | Xcode Version |
++| ------------------------ | -------------------- | ------------- |
++| macOS 14.0               | macosx14.0           | 15.0          |
++| iOS 17.0                 | iphoneos17.0         | 15.0          |
++| Simulator - iOS 17.0     | iphonesimulator17.0  | 15.0          |
++| tvOS 17.0                | appletvos17.0        | 15.0          |
++| Simulator - tvOS 17.0    | appletvsimulator17.0 | 15.0          |
++| watchOS 10.0             | watchos10.0          | 15.0          |
++| Simulator - watchOS 10.0 | watchsimulator10.0   | 15.0          |
++| DriverKit 23.0           | driverkit23.0        | 15.0          |
++
++#### Installed Simulators
++| OS           | Xcode Version | Simulators                                                                                                                                                                                                                                                                                                                                                             |
++| ------------ | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
++| iOS 17.0     | 15.0          | iPhone 15<br>iPhone 15 Plus<br>iPhone 15 Pro<br>iPhone 15 Pro Max<br>iPhone SE (3rd generation)<br>iPad (10th generation)<br>iPad Air (5th generation)<br>iPad mini (6th generation)<br>iPad Pro (11-inch) (4th generation)<br>iPad Pro (12.9-inch) (6th generation)                                                                                                   |
++| tvOS 17.0    | 15.0          | Apple TV<br>Apple TV 4K (3rd generation)<br>Apple TV 4K (3rd generation) (at 1080p)                                                                                                                                                                                                                                                                                    |
++| watchOS 10.0 | 15.0          | Apple Watch SE (40mm) (2nd generation)<br>Apple Watch SE (44mm) (2nd generation)<br>Apple Watch Series 5 (40mm)<br>Apple Watch Series 5 (44mm)<br>Apple Watch Series 6 (40mm)<br>Apple Watch Series 6 (44mm)<br>Apple Watch Series 7 (41mm)<br>Apple Watch Series 7 (45mm)<br>Apple Watch Series 9 (41mm)<br>Apple Watch Series 9 (45mm)<br>Apple Watch Ultra 2 (49mm) |
++
++### Android
++| Package Name               | Version                                                                                                                                               |
++| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
++| Android Command Line Tools | 11.0                                                                                                                                                  |
++| Android Emulator           | 33.1.24                                                                                                                                               |
++| Android SDK Build-tools    | 34.0.0<br>33.0.2                                                                                                                                      |
++| Android SDK Platforms      | android-34-ext8 (rev 1)<br>android-34-ext10 (rev 1)<br>android-34 (rev 2)<br>android-33-ext5 (rev 1)<br>android-33-ext4 (rev 1)<br>android-33 (rev 3) |
++| Android SDK Platform-Tools | 34.0.5                                                                                                                                                |
++| Android Support Repository | 47.0.0                                                                                                                                                |
++| CMake                      | 3.22.1                                                                                                                                                |
++| Google Play services       | 49                                                                                                                                                    |
++| Google Repository          | 58                                                                                                                                                    |
++| NDK                        | 24.0.8215888<br>25.2.9519653<br>26.1.10909125 (default)                                                                                               |
++
++#### Environment variables
++| Name                    | Value                                             |
++| ----------------------- | ------------------------------------------------- |
++| ANDROID_HOME            | /Users/anka/Library/Android/sdk                   |
++| ANDROID_NDK             | /Users/anka/Library/Android/sdk/ndk/26.1.10909125 |
++| ANDROID_NDK_HOME        | /Users/anka/Library/Android/sdk/ndk/26.1.10909125 |
++| ANDROID_NDK_LATEST_HOME | /Users/anka/Library/Android/sdk/ndk/26.1.10909125 |
++| ANDROID_NDK_ROOT        | /Users/anka/Library/Android/sdk/ndk/26.1.10909125 |
++| ANDROID_SDK_ROOT        | /Users/anka/Library/Android/sdk                   |
++
+diff --git a/kustomize/gitops-app/guestbook.yaml b/kustomize/gitops-app/guestbook.yaml
+new file mode 100644
+index 0000000..8a0975e
+--- /dev/null
++++ b/kustomize/gitops-app/guestbook.yaml
+@@ -0,0 +1,20 @@
++apiVersion: apps/v1
++kind: Deployment
++metadata:
++  name: guestbook-ui
++spec:
++  replicas: 1
++  revisionHistoryLimit: 3
++  selector:
++    matchLabels:
++      app: guestbook-ui
++  template:
++    metadata:
++      labels:
++        app: guestbook-ui
++    spec:
++      containers:
++      - image: gcr.io/heptio-images/ks-guestbook-demo:0.2
++        name: guestbook-ui
++        ports:
++        - containerPort: 80
+diff --git a/kustomize/gitops-app/kustomization.yaml b/kustomize/gitops-app/kustomization.yaml
+new file mode 100644
+index 0000000..a927727
+--- /dev/null
++++ b/kustomize/gitops-app/kustomization.yaml
+@@ -0,0 +1,5 @@
++resources:
++- guestbook.yaml
++
++apiVersion: kustomize.config.k8s.io/v1beta1
++kind: Kustomization
+diff --git a/serverless/artifacts/serverless.yaml b/serverless/artifacts/serverless.yaml
+index 831e192..b84f88c 100644
+--- a/serverless/artifacts/serverless.yaml
++++ b/serverless/artifacts/serverless.yaml
+@@ -3,7 +3,7 @@ frameworkVersion: '2 || 3'
+ 
+ provider:
+   name: aws
+-  runtime: nodejs14.x
++  runtime: nodejs20.x
+ functions:
+   hello:
+     handler: handler.hello
