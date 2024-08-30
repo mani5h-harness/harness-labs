@@ -8,11 +8,11 @@ spec:
   selector:
     matchLabels:
       app: guestbook-ui
-      test: some-label
   template:
     metadata:
       labels:
         app: guestbook-ui
+        test: test-label
     spec:
       containers:
       - image: gcr.io/heptio-images/ks-guestbook-demo:0.2
