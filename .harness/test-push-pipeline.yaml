@@ -38,4 +38,4 @@ pipeline:
                     connectorRef: account.AT_Docker
                     image: library/nginx
                     shell: Sh
-                    command: echo "testing make a change"
+                    command: echo "testing make a afafa"
