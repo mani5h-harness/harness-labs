@@ -1,0 +1,48 @@
+pipeline:
+  name: test-multi-repo-pipeline
+  identifier: testmultirepopipeline
+  projectIdentifier: CSE_Lab_Project
+  orgIdentifier: CSE_Labs
+  tags: {}
+  stages:
+    - stage:
+        name: abc
+        identifier: abc
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: Kubernetes
+          service:
+            serviceRef: testmultireposervice
+            gitBranch: main
+          environment:
+            environmentRef: testmultirepoenv
+            gitBranch: main
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: testmultirepoinfra
+          execution:
+            steps:
+              - step:
+                  type: ShellScript
+                  name: ShellScript_1
+                  identifier: ShellScript_1
+                  spec:
+                    shell: Bash
+                    executionTarget: {}
+                    source:
+                      type: Inline
+                      spec:
+                        script: echo "hello world"
+                    environmentVariables: []
+                    outputVariables: []
+                    includeInfraSelectors: false
+                  timeout: 10m
+            rollbackSteps: []
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
