@@ -1,6 +1,6 @@
 name: harness-example
 replicas: 2
-
+testVar: 1
 image: ${artifact.metadata.image}
 dockercfg: ${artifact.source.dockerconfig}
 jobName: austin-test
