@@ -31,6 +31,17 @@ pipeline:
           execution:
             steps:
               - step:
+                  type: GitClone
+                  name: GitClone_1
+                  identifier: GitClone_1
+                  spec:
+                    connectorRef: Harness_Labs
+                    repoName: harness-labs-cie
+                    build:
+                      type: branch
+                      spec:
+                        branch: main
+              - step:
                   type: Run
                   name: Run_1
                   identifier: Run_1
