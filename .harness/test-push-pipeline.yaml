@@ -31,22 +31,32 @@ pipeline:
           execution:
             steps:
               - step:
-                  type: GitClone
-                  name: GitClone_1
-                  identifier: GitClone_1
-                  spec:
-                    connectorRef: Harness_Labs
-                    repoName: harness-labs-cie
-                    build:
-                      type: branch
-                      spec:
-                        branch: main
-              - step:
                   type: Run
-                  name: Run_1
-                  identifier: Run_1
+                  name: tests
+                  identifier: tests
                   spec:
                     connectorRef: account.AT_Docker
-                    image: library/nginx
+                    image: python:latest
                     shell: Sh
-                    command: echo "testing make a afafa"
+                    command: |-
+                      # Install dependencies.
+                      pip install -r requirements.txt
+
+                      # Call split_tests, define splitting strategy, and generate the list of test files.
+                      FILES=`/addon/bin/split_tests --glob "**/test_*.py" --split-by file_timing \
+                         --split-index ${HARNESS_NODE_INDEX} \
+                         --split-total ${HARNESS_NODE_TOTAL}`
+                      echo $FILES
+
+                      # Use the test files list as input for pytest and produce results in JUnit XML format.
+                      pytest -v --junitxml="result.xml" $FILES
+                    reports:
+                      type: JUnit
+                      spec:
+                        paths:
+                          - "**/result.xml"
+                    envVariables:
+                      HARNESS_NODE_INDEX: <+strategy.iteration>
+                      HARNESS_NODE_TOTAL: <+strategy.iterations>
+        strategy:
+          parallelism: 4
