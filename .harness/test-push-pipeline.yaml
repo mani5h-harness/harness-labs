@@ -64,5 +64,5 @@ pipeline:
           - name: testVariable
             type: String
             description: ""
-            required: false
+            required: true
             value: <+input>
