@@ -60,3 +60,9 @@ pipeline:
                       HARNESS_NODE_TOTAL: <+strategy.iterations>
         strategy:
           parallelism: 4
+        variables:
+          - name: testVariable
+            type: String
+            description: ""
+            required: false
+            value: <+input>
