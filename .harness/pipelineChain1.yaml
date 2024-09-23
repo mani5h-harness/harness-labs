@@ -37,13 +37,5 @@ pipeline:
           org: CSE_Labs
           pipeline: pipelineChain2
           project: CSE_Lab_Project
-          inputs:
-            identifier: pipelineChain2
-            stages:
-              - stage:
-                  identifier: run
-                  type: Custom
-                  variables:
-                    - name: test
-                      type: String
-                      value: hello world
+          inputSetReferences:
+            - pipelineChain2InputSet
