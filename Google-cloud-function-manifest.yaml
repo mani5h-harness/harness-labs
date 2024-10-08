@@ -1,0 +1,44 @@
+# Following are the minimum set of parameters required to create a Google Cloud Function.
+# Please make sure your uploaded manifest file includes all of them.
+
+function:
+  name: austin-test-http-function
+  buildConfig:
+    automaticUpdatePolicy: {}
+    build: projects/142295963338/locations/us-central1/builds/b6689e93-26ef-4822-b17b-e8e7a86f2e07
+    dockerRegistry: ARTIFACT_REGISTRY
+    dockerRepository: projects/customer-success-244100/locations/us-central1/repositories/gcf-artifacts
+    entryPoint: helloWorld
+    runtime: nodejs16
+    source:
+        storageSource:
+        bucket: gcf-v2-sources-142295963338-us-central1
+        generation: '1728345058919242'
+        object: nodejs-http-function/function-source.zip
+    sourceProvenance:
+        resolvedStorageSource:
+        bucket: gcf-v2-sources-142295963338-us-central1
+        generation: '1728345058919242'
+        object: nodejs-http-function/function-source.zip
+    createTime: '2024-10-07T23:47:14.908472275Z'
+    environment: GEN_2
+    labels:
+    deployment-tool: cli-gcloud
+    name: projects/customer-success-244100/locations/us-central1/functions/nodejs-http-function
+    serviceConfig:
+    allTrafficOnLatestRevision: true
+    availableCpu: '0.1666'
+    availableMemory: 256M
+    environmentVariables:
+        LOG_EXECUTION_ID: 'true'
+    ingressSettings: ALLOW_ALL
+    maxInstanceCount: 100
+    maxInstanceRequestConcurrency: 1
+    revision: nodejs-http-function-00002-nol
+    service: projects/customer-success-244100/locations/us-central1/services/nodejs-http-function
+    serviceAccountEmail: 142295963338-compute@developer.gserviceaccount.com
+    timeoutSeconds: 600
+    uri: https://nodejs-http-function-eoxivukf2q-uc.a.run.app
+    state: ACTIVE
+    updateTime: '2024-10-07T23:51:46.080850600Z'
+    url: https://us-central1-customer-success-244100.cloudfunctions.net/nodejs-http-function
