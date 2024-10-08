@@ -1,30 +1,28 @@
-# Following are the minimum set of parameters required to create a Google Cloud Function.
-# Please make sure your uploaded manifest file includes all of them.
-
 function:
   name: austin-test-http-function
   buildConfig:
     automaticUpdatePolicy: {}
-    build: projects/142295963338/locations/us-central1/builds/b6689e93-26ef-4822-b17b-e8e7a86f2e07
+    build: projects/1034437556239/locations/us-central1/builds/2a9be64d-be0a-43b0-ae32-ab5afec4dcf0
     dockerRegistry: ARTIFACT_REGISTRY
-    dockerRepository: projects/customer-success-244100/locations/us-central1/repositories/gcf-artifacts
+    dockerRepository: projects/kubernetes-austin/locations/us-central1/repositories/gcf-artifacts
     entryPoint: helloWorld
     runtime: nodejs16
+    serviceAccount: projects/kubernetes-austin/serviceAccounts/1034437556239-compute@developer.gserviceaccount.com
     source:
         storageSource:
-        bucket: gcf-v2-sources-142295963338-us-central1
-        generation: '1728345058919242'
+        bucket: gcf-v2-sources-1034437556239-us-central1
+        generation: '1728346625246767'
         object: nodejs-http-function/function-source.zip
     sourceProvenance:
         resolvedStorageSource:
-        bucket: gcf-v2-sources-142295963338-us-central1
-        generation: '1728345058919242'
+        bucket: gcf-v2-sources-1034437556239-us-central1
+        generation: '1728346625246767'
         object: nodejs-http-function/function-source.zip
-    createTime: '2024-10-07T23:47:14.908472275Z'
+    createTime: '2024-10-08T00:15:10.291114659Z'
     environment: GEN_2
     labels:
     deployment-tool: cli-gcloud
-    name: projects/customer-success-244100/locations/us-central1/functions/nodejs-http-function
+    name: projects/kubernetes-austin/locations/us-central1/functions/nodejs-http-function
     serviceConfig:
     allTrafficOnLatestRevision: true
     availableCpu: '0.1666'
@@ -34,11 +32,11 @@ function:
     ingressSettings: ALLOW_ALL
     maxInstanceCount: 100
     maxInstanceRequestConcurrency: 1
-    revision: nodejs-http-function-00002-nol
-    service: projects/customer-success-244100/locations/us-central1/services/nodejs-http-function
-    serviceAccountEmail: 142295963338-compute@developer.gserviceaccount.com
+    revision: nodejs-http-function-00001-wod
+    service: projects/kubernetes-austin/locations/us-central1/services/nodejs-http-function
+    serviceAccountEmail: 1034437556239-compute@developer.gserviceaccount.com
     timeoutSeconds: 600
-    uri: https://nodejs-http-function-eoxivukf2q-uc.a.run.app
+    uri: https://nodejs-http-function-m4jp3ognaq-uc.a.run.app
     state: ACTIVE
-    updateTime: '2024-10-07T23:51:46.080850600Z'
-    url: https://us-central1-customer-success-244100.cloudfunctions.net/nodejs-http-function
+    updateTime: '2024-10-08T00:18:08.544562585Z'
+    url: https://us-central1-kubernetes-austin.cloudfunctions.net/nodejs-http-function
