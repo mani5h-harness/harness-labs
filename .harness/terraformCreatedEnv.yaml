@@ -1,0 +1,7 @@
+environment:
+  orgIdentifier: CSE_Labs
+  projectIdentifier: CSE_Lab_Project
+  identifier: terraformCreatedEnv
+  tags: {}
+  name: terraformCreatedEnv
+  type: PreProduction
