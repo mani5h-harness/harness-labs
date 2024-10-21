@@ -1,0 +1,163 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    apigee.cloud.google.com/platform: apigee
+  name: apigee-metrics-apigee-telemetry
+  namespace: {{ include "namespace" . }}
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - get
+      - list
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    apigee.cloud.google.com/platform: apigee
+  name: apigee-metrics-adapter-apigee-telemetry-{{ include "namespace" . }}
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - authorization.k8s.io
+    resources:
+      - subjectaccessreviews
+    verbs:
+      - create
+      - get
+      - list
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    apigee.cloud.google.com/platform: apigee
+  name: apigee-metrics-adapter-apigee-telemetry
+  namespace: {{ include "namespace" . }}
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+      - services
+    verbs:
+      - get
+      - list
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    apigee.cloud.google.com/platform: apigee
+  name: apigee-metrics-apigee-telemetry
+  namespace: {{ include "namespace" . }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: apigee-metrics-apigee-telemetry
+subjects:
+  {{- if .Values.gcp.workloadIdentity.enabled }}
+  - kind: ServiceAccount
+    name: apigee-metrics-sa
+    namespace: {{ include "namespace" . }}
+  {{- else }}
+  - kind: ServiceAccount
+    name: apigee-metrics-apigee-telemetry
+    namespace: {{ include "namespace" . }}
+  {{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    apigee.cloud.google.com/platform: apigee
+  name: apigee-metrics-adapter-apigee-telemetry-{{ include "namespace" . }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: apigee-metrics-adapter-apigee-telemetry-{{ include "namespace" . }}
+subjects:
+  {{- if .Values.gcp.workloadIdentity.enabled }}
+  - kind: ServiceAccount
+    name: apigee-metrics-sa
+    namespace: {{ include "namespace" . }}
+  {{- else }}
+  - kind: ServiceAccount
+    name: apigee-metrics-adapter-apigee-telemetry
+    namespace: {{ include "namespace" . }}
+  {{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    apigee.cloud.google.com/platform: apigee
+  name: apigee-metrics-adapter-apigee-telemetry
+  namespace: {{ include "namespace" . }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: apigee-metrics-adapter-apigee-telemetry
+subjects:
+  {{- if .Values.gcp.workloadIdentity.enabled }}
+  - kind: ServiceAccount
+    name: apigee-metrics-sa
+    namespace: {{ include "namespace" . }}
+  {{- else }}
+  - kind: ServiceAccount
+    name: apigee-metrics-adapter-apigee-telemetry
+    namespace: {{ include "namespace" . }}
+  {{- end }}
+---
+{{- if not .Values.ao.args.disableManagedClusterRoles }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    apigee.cloud.google.com/platform: apigee
+  name: apigee-manager-cluster-role
+rules:
+  - apiGroups:
+      - rbac.authorization.k8s.io
+    resources:
+      - clusterrolebindings
+      - clusterroles
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    apigee.cloud.google.com/platform: apigee
+  name: apigee-manager-cluster-role
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: apigee-manager-cluster-role
+subjects:
+  - kind: ServiceAccount
+    name: apigee-manager
+    namespace: {{ include "namespace" . }}
+{{- end }}
+---

@@ -1,0 +1,43 @@
+# below comment needs to be present to detect invalid test schema
+# yaml-language-server: $schema=https://raw.githubusercontent.com/quintush/helm-unittest/master/schema/helm-testsuite.json
+suite: apigee-operators-deployment-test
+templates:
+- apigee-operators-deployment.yaml
+release:
+  name: test-release
+  namespace: test-namespace
+
+tests:
+- it: should contain a deployment
+  asserts:
+  - isKind:
+      of: Deployment
+  - isAPIVersion:
+      of: apps/v1
+  - equal:
+      path: metadata.name
+      value: apigee-controller-manager
+  - equal:
+      path: metadata.namespace
+      value: test-namespace
+- it: redis secret provider class provided
+  set:
+    redis.auth.secretProviderClass: test-redis-spc
+  asserts:
+  - isSubset:
+      path: spec.template.spec.containers[?(@.name == "manager")].env[?(@.name == "REDIS_PASSWORD_PATH")]
+      content:
+        value: /opt/apigee/external-secrets/redis/redis-password
+  - isSubset:
+      path: spec.template.spec.containers[?(@.name == "manager")].volumeMounts[?(@.name == "apigee-external-secrets-redis")]
+      content:
+        mountPath: /opt/apigee/external-secrets/redis
+        readOnly: true
+  - isSubset:
+      path: spec.template.spec.volumes[?(@.name == "apigee-external-secrets-redis")]
+      content:
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: test-redis-spc
