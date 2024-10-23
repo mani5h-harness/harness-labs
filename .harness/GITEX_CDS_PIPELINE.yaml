@@ -22,3 +22,11 @@ pipeline:
                 infrastructureDefinitions: <+input>
               service:
                 serviceRef: testgitmoveservice
+                serviceInputs:
+                  serviceDefinition:
+                    type: Kubernetes
+                    spec:
+                      artifacts:
+                        primary:
+                          primaryArtifactRef: <+input>
+                          sources: <+input>
