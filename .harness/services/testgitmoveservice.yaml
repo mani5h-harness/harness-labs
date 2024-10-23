@@ -22,6 +22,17 @@ service:
                 - default-k8s-manifests/Manifests/Files/values.yaml
               skipResourceVersioning: false
               enableDeclarativeRollback: false
+      artifacts:
+        primary:
+          primaryArtifactRef: <+input>
+          sources:
+            - spec:
+                connectorRef: account.AT_Docker
+                imagePath: library/nginx
+                tag: <+input>
+                digest: ""
+              identifier: artifact
+              type: DockerRegistry
   gitOpsEnabled: false
   orgIdentifier: CSE_Labs
   projectIdentifier: CSE_Lab_Project
