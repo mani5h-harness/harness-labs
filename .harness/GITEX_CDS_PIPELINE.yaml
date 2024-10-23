@@ -1,0 +1,24 @@
+pipeline:
+  name: GITEX_CDS_PIPELINE
+  identifier: GITEX_CDS_PIPELINE
+  projectIdentifier: CSE_Lab_Project
+  orgIdentifier: CSE_Labs
+  tags: {}
+  stages:
+    - stage:
+        name: test
+        identifier: test
+        tags: {}
+        template:
+          templateRef: CDS_GITEX_TEMPLATE
+          gitBranch: austinthao5-patch-4-patch
+          templateInputs:
+            type: Deployment
+            spec:
+              environment:
+                environmentRef: <+input>
+                environmentInputs: <+input>
+                serviceOverrideInputs: <+input>
+                infrastructureDefinitions: <+input>
+              service:
+                serviceRef: testgitmoveservice
