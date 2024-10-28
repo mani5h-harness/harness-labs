@@ -1,33 +1,28 @@
-# deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-app-{{ .Values.color }}
+  name: bluegreen-example
   labels:
-    app: my-app
-    environment: {{ .Values.color }}
+    app: bluegreen-example
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: my-app
-      environment: {{ .Values.color }}
+      app: bluegreen-example
   template:
     metadata:
       labels:
-        app: my-app
-        environment: {{ .Values.color }}
+        app: bluegreen-example
     spec:
       containers:
-        - name: my-app-container
+        - name: bluegreen-example
           image: hashicorp/http-echo
           args:
             - "-text=$(COLOR)"
           env:
             - name: COLOR
               valueFrom:
-                configMapKeyRef:
-                  name: app-color-{{ .Values.color }}
-                  key: COLOR
+                fieldRef:
+                  fieldPath: metadata.labels['harness.io/color']
           ports:
             - containerPort: 5678
