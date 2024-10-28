@@ -8,6 +8,6 @@ spec:
     app: bluegreen-example
   ports:
     - protocol: TCP
-      port: 80
+      port: 8080
       targetPort: 5678
   type: ClusterIP
