@@ -6,26 +6,25 @@ pipeline:
   tags: {}
   stages:
     - stage:
-        name: test
-        identifier: test
+        name: echo
+        identifier: echo
+        description: ""
+        type: Custom
+        spec:
+          execution:
+            steps:
+              - step:
+                  type: ShellScript
+                  name: ShellScript_1
+                  identifier: ShellScript_1
+                  spec:
+                    shell: Bash
+                    executionTarget: {}
+                    source:
+                      type: Inline
+                      spec:
+                        script: echo "test"
+                    environmentVariables: []
+                    outputVariables: []
+                  timeout: 10m
         tags: {}
-        template:
-          templateRef: CDS_GITEX_TEMPLATE
-          templateInputs:
-            type: Deployment
-            spec:
-              environment:
-                environmentRef: <+input>
-                environmentInputs: <+input>
-                serviceOverrideInputs: <+input>
-                infrastructureDefinitions: <+input>
-              service:
-                serviceRef: testgitmoveservice
-                serviceInputs:
-                  serviceDefinition:
-                    type: Kubernetes
-                    spec:
-                      artifacts:
-                        primary:
-                          primaryArtifactRef: <+input>
-                          sources: <+input>
