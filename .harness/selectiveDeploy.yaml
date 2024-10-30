@@ -28,6 +28,12 @@ pipeline:
                     outputVariables: []
                   timeout: 10m
         tags: {}
+        variables:
+          - name: fake
+            type: String
+            description: ""
+            required: false
+            value: <+input>
     - stage:
         name: test2
         identifier: test2
