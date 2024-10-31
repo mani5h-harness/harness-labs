@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: rolling-example-service
+  name: canary-example-service
 spec:
   selector:
-    app: rolling-example
+    app: canary-example
   ports:
     - name: http
       protocol: TCP
