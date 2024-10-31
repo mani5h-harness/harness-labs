@@ -1,23 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rolling-example
+  name: canary-example
   labels:
-    app: rolling-example
+    app: canary-example
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: rolling-example
+      app: canary-example
   template:
     metadata:
       labels:
-        app: rolling-example
+        app: canary-example
     spec:
       containers:
-        - name: rolling-example
+        - name: canary-example
           image: hashicorp/http-echo
           args:
-            - "-text=Rolling Deploy"
+            - "-text=Harness Canary Deploying: $(TRACK)"
+          env:
+            - name: TRACK
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['harness.io/track']
           ports:
             - containerPort: 5678
