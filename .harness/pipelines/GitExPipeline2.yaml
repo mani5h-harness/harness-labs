@@ -42,7 +42,7 @@ pipeline:
                   type: K8sRollingDeploy
                   timeout: 10m
                   spec:
-                    skipDryRun: false
+                    skipDryRun: true
                     pruningEnabled: false
             rollbackSteps:
               - step:
