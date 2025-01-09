@@ -1,6 +1,6 @@
 pipeline:
-  name: testDescriptionValidation
-  identifier: testDescriptionValidation
+  name: testDescriptionValidation2
+  identifier: testDescriptionValidation2
   projectIdentifier: default_project
   orgIdentifier: default
   tags: {}
