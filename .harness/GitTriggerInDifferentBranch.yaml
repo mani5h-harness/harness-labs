@@ -23,7 +23,9 @@ pipeline:
                     source:
                       type: Inline
                       spec:
-                        script: echo "<+stage.variables.test>"
+                        script: |-
+                          echo "<+stage.variables.test>"
+                          echo "abc"
                     environmentVariables: []
                     outputVariables: []
                   timeout: 10m
