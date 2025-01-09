@@ -1,8 +1,8 @@
 pipeline:
-  name: GitTriggerInDifferentBranch
-  identifier: GitTriggerInDifferentBranch
-  projectIdentifier: CSE_Lab_Project
-  orgIdentifier: CSE_Labs
+  name: testDescriptionValidation
+  identifier: testDescriptionValidation
+  projectIdentifier: default_project
+  orgIdentifier: default
   tags: {}
   stages:
     - stage:
@@ -31,6 +31,5 @@ pipeline:
         variables:
           - name: test
             type: String
-            description: ""
             required: false
             value: <+input>
