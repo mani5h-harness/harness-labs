@@ -1,0 +1,90 @@
+template:
+  name: Docker_DCR_Build_and_Push_to_GAR
+  identifier: Docker_DCR_Build_and_Push_to_GAR
+  versionLabel: "1"
+  type: StepGroup
+  tags: {}
+  spec:
+    stageType: CI
+    steps:
+      - step:
+          type: Run
+          name: Docker Push to GAR
+          identifier: Docker_Push_to_GAR
+          spec:
+            connectorRef: <+variable.account.awswdprappsconnector>
+            image: 876496569223.dkr.ecr.us-east-1.amazonaws.com/dpep-cicd-images/cloud:latest
+            shell: Bash
+            command: |-
+              #!/bin/bash
+              apt update
+              apt-get install -y jq
+
+              # Location to store incoming secret json key in correct format
+              SERVICE_ACCOUNT_KEY_FILE="/harness/service_account_key.json"
+               
+              # Replace newline characters with spaces
+              GCP_SERVICE_ACCOUNT_KEY=$(echo "$GCP_SERVICE_ACCOUNT_KEY" | tr '\n' ' ')
+               
+              # Parse the JSON data using jq
+              PARSED_GCP_SERVICE_ACCOUNT_KEY=$(echo "$GCP_SERVICE_ACCOUNT_KEY" | jq '.')
+               
+              # Add newline characters back
+              PARSED_GCP_SERVICE_ACCOUNT_KEY_WITH_NEW_LINES=$(echo "$PARSED_GCP_SERVICE_ACCOUNT_KEY" | sed 's/  /\'$'\n''/g')
+               
+              # Output the parsed data with newline characters
+              echo $PARSED_GCP_SERVICE_ACCOUNT_KEY_WITH_NEW_LINES > $SERVICE_ACCOUNT_KEY_FILE
+
+              #Login to GAR
+              cat $SERVICE_ACCOUNT_KEY_FILE | docker login -u _json_key --password-stdin https://${GCP_REGION}-docker.pkg.dev
+
+              docker images
+              cat ~/.docker/config.json
+              docker push ${GCP_REGION}-docker.pkg.dev/${GCP_PROJECT_ID}/${GAR_REPO_NAME} --all-tags
+            envVariables:
+              IMAGE_TAG: <+stepGroup.steps.Docker_Build.output.outputVariables.IMAGE_TAG>
+              GAR_REPO_NAME: <+stepGroup.steps.Docker_Build.output.outputVariables.GAR_REPO_NAME>
+              GCP_PROJECT_ID: <+stepGroup.steps.Docker_Build.output.outputVariables.GCP_PROJECT_ID>
+              GCP_REGION: <+stepGroup.steps.Docker_Build.output.outputVariables.GCP_REGION>
+              GCP_SERVICE_ACCOUNT_KEY: <+stepGroup.variables.GCP_SERVICE_ACCOUNT_KEY>
+    variables:
+      - name: DCR_USER_NAME
+        type: String
+        value: <+input>
+        description: ""
+        required: true
+      - name: DCR_PASSWORD
+        type: String
+        value: <+input>
+        description: ""
+        required: true
+      - name: GCP_REGION
+        type: String
+        value: <+input>
+        description: ""
+        required: true
+      - name: GCP_PROJECT_ID
+        type: String
+        value: <+input>
+        description: ""
+        required: true
+      - name: GAR_REPO_NAME
+        type: String
+        value: <+input>
+        description: ""
+        required: true
+      - name: IMAGE_TAG
+        type: String
+        value: <+input>
+        description: ""
+        required: true
+      - name: PROJECT_ROOT
+        type: String
+        value: <+input>.default(.)
+        description: ""
+        required: false
+      - name: GCP_SERVICE_ACCOUNT_KEY
+        type: String
+        value: <+input>
+        description: ""
+        required: true
