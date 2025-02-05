@@ -20,5 +20,5 @@ pipeline:
                     templateRef: http
                     versionLabel: "1"
                   when:
-                    stageStatus: Success
+                    pipelineStatus: Success
         tags: {}
