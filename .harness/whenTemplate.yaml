@@ -23,4 +23,6 @@ pipeline:
                       type: Http
                       spec:
                         requestBody: <+input>
+                  when:
+                    pipelineStatus: Success
         tags: {}
