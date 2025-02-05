@@ -1,0 +1,24 @@
+pipeline:
+  name: whenTemplate
+  identifier: whenTemplate
+  projectIdentifier: default_project
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: template
+        identifier: template
+        description: ""
+        type: Custom
+        spec:
+          execution:
+            steps:
+              - step:
+                  name: abc
+                  identifier: abc
+                  template:
+                    templateRef: http
+                    versionLabel: "1"
+                  when:
+                    stageStatus: Success
+        tags: {}
