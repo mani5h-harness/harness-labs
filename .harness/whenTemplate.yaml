@@ -19,6 +19,8 @@ pipeline:
                   template:
                     templateRef: http
                     versionLabel: "1"
-                  when:
-                    pipelineStatus: Success
+                    templateInputs:
+                      type: Http
+                      spec:
+                        requestBody: <+input>
         tags: {}
