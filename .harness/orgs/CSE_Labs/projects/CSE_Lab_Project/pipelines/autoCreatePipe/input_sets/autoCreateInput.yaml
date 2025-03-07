@@ -1,0 +1,15 @@
+inputSet:
+  name: autoCreateInput
+  identifier: autoCreateInput
+  orgIdentifier: CSE_Labs
+  projectIdentifier: CSE_Lab_Project
+  pipeline:
+    identifier: autoCreatePipe
+    stages:
+      - stage:
+          identifier: abc
+          type: Custom
+          variables:
+            - name: someVar
+              type: String
+              value: "123"
