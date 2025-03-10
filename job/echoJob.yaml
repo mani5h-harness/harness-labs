@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-options: Force=true,Replace=true
+  name: example-job
+spec:
+  template:
+    metadata:
+      name: example-job
+    spec:
+      containers:
+        - name: example-container
+          image: busybox:1.35.0-uclibc
+          command: ["sh", "-c", "echo Hello, Kubernetes! && sleep 10"]
+      restartPolicy: Never
+  backoffLimit: 4
