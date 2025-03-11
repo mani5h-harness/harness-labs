@@ -1,4 +1,4 @@
-{{- if eq .Values.infra.cluster_region "us_east4" -}}
+{{- if eq .Values.infra.cluster_region "us_east4" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -6,14 +6,12 @@ metadata:
   annotations:
     harness.io/skip-versioning: "true"
 data:
-  SRV1_RACECAR_FQDN: {{index .Values.deployment.fqdns 0}}
-  SRV1_REST_USER: {{ .Values.cron.rest_user }}
-  PROJECT_ID: {{ .Values.deployment.gcp_data_project }}
-  SPANNER_INSTANCE_ID: {{ .Values.deployment.gcp_spanner_instance_id }}
-  SPANNER_DB_ID: {{ .Values.cron.spanner_db_id }}
-{{- end -}}
-
-{{- if eq .Values.infra.cluster_region "us_east4" -}}
+  SRV1_RACECAR_FQDN: "{{ index .Values.deployment.fqdns 0 }}"
+  SRV1_REST_USER: "{{ .Values.cron.rest_user }}"
+  PROJECT_ID: "{{ .Values.deployment.gcp_data_project }}"
+  SPANNER_INSTANCE_ID: "{{ .Values.deployment.gcp_spanner_instance_id }}"
+  SPANNER_DB_ID: "{{ .Values.cron.spanner_db_id }}"
+---
 apiVersion: v1
 kind: Secret
 metadata:
@@ -21,5 +19,5 @@ metadata:
   annotations:
     harness.io/skip-versioning: "true"
 data:
-  SRV1_REST_PASS: "{{ .Values.cron.rest_pass }}"
-{{- end -}}
+  SRV1_REST_PASS: "{{ .Values.cron.rest_pass | b64enc }}"
+{{- end }}
