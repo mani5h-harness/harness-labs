@@ -3,6 +3,8 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: racecar-vin-data-backfill
+  annotations:
+    harness.io/skip-versioning: "true"
 data:
   SRV1_RACECAR_FQDN: "{{ index .Values.deployment.fqdns 0 }}"
   SRV1_REST_USER: "{{ .Values.cron.rest_user }}"
@@ -14,6 +16,8 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: racecar-vin-data-backfill
+  annotations:
+    harness.io/skip-versioning: "true"
 data:
   SRV1_REST_PASS: "{{ .Values.cron.rest_pass | b64enc }}"
 {{- end }}
