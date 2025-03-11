@@ -1,0 +1,13 @@
+infra:
+  cluster_region: "us_east4"
+
+deployment:
+  fqdns:
+    - "racecar.example.com"
+  gcp_data_project: "my-gcp-project"
+  gcp_spanner_instance_id: "spanner-instance-1"
+
+cron:
+  rest_user: "admin"
+  rest_pass: "cGFzc3dvcmQ="  # Base64-encoded password
+  spanner_db_id: "racecar-db"
