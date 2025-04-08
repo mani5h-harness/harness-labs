@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: harness-labs-deployment
+  namespace: austin-argocd
+spec:
+  project: 3164c471
+  source:
+    repoURL: https://github.com/austinthao5/harness-labs.git
+    targetRevision: main
+    path: k8s-bluegreen/two-services/templates
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: austin-argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
