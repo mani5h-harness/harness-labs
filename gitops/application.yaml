@@ -4,7 +4,7 @@ metadata:
   name: guestbook
   namespace: austin-argocd
 spec:
-  project: default
+  project: 3164c471
   source:
     repoURL: https://github.com/austinthao5/harness-labs.git
     targetRevision: main
