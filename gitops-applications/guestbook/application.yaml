@@ -1,18 +1,19 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
 metadata:
-  name: guestbook
-  namespace: austin-argocd
+  name: "guestbook"
+  namespace: "austin-argocd"
+apiVersion: "argoproj.io/v1alpha1"
+abc: "Changed in Harness"
+kind: "Application"
 spec:
-  project: 3164c471
-  source:
-    repoURL: https://github.com/austinthao5/harness-labs.git
-    targetRevision: main
-    path: gitops/guestbook
   destination:
-    server: https://kubernetes.default.svc
-    namespace: austin-argocd
+    server: "https://kubernetes.default.svc"
+    namespace: "austin-argocd"
+  project: "3164c471"
+  source:
+    repoURL: "https://github.com/austinthao5/harness-labs.git"
+    path: "gitops/guestbook"
+    targetRevision: "main"
   syncPolicy:
     automated:
-      prune: true
       selfHeal: true
+      prune: true
