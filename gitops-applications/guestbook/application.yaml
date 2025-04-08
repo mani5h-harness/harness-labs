@@ -2,7 +2,7 @@ metadata:
   name: "guestbook"
   namespace: "austin-argocd"
 apiVersion: "argoproj.io/v1alpha1"
-abc: "Change Here"
+abc: "Service Variable"
 kind: "Application"
 spec:
   destination:
