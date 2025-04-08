@@ -1,9 +1,8 @@
+apiVersion: "argoproj.io/v1alpha1"
+kind: "Application"
 metadata:
   name: "guestbook"
   namespace: "austin-argocd"
-apiVersion: "argoproj.io/v1alpha1"
-abc: "Service Variable"
-kind: "Application"
 spec:
   destination:
     server: "https://kubernetes.default.svc"
