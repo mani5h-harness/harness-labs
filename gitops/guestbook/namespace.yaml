@@ -1,4 +1,4 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: austin-test-guestbook
+  name: austin-test-guestbook123
