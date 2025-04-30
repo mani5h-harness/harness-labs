@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: guestbook-ui
-  namespace: austin-test-guestbook
+  namespace: austin-test-guestbook123
 spec:
   ports:
   - port: 80
