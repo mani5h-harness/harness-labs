@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: guestbook-ui
-  namespace: austin-test-guestbook
+  namespace: austin-test-guestbook123
 spec:
   replicas: 1
   revisionHistoryLimit: 3
