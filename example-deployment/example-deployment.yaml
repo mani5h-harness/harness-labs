@@ -65,94 +65,94 @@ spec:
         image: nginx:latest
         ports:
         - containerPort: 80
-      env:
-        - name: NEW_RELIC_APP_NAME
-          value: "dummy-app-name"
-        - name: NEW_RELIC_LABELS
-          value: "env:dummy;app:example"
-        - name: NEW_RELIC_IGNORING_RULES
-          value: "^/dummy/.*$,^/test/.*$"
-        - name: NEW_RELIC_NO_CONFIG_FILE
-          value: "true"
-        - name: TITAN_PLATFORM_EXTERNAL_ID
-          value: "dummy-id-12345"
-        - name: PAGER_ENVIRONMENT
-          value: "dummy-env"
-        - name: API_BOTS_URL
-          value: "http://dummy-api-bots.local"
-        - name: API_DEMOGRAPHICS_URL
-          value: "http://dummy-api-demographics.local"
-        - name: API_FF_URL
-          value: "http://dummy-api-ff.local"
-        - name: API_GATEWAY_ADMIN
-          value: "http://dummy-api-gateway.local"
-        - name: API_MESSAGES_URL
-          value: "http://dummy-api-messages.local"
-        - name: API_TWILIO_URL
-          value: "http://dummy-api-twilio.local"
-        - name: EDGE_API_ADMIN_URL
-          value: "http://dummy-edge-api-admin.local"
-        - name: EDGE_API_CC_URL
-          value: "http://dummy-edge-api-cc.local"
-        - name: LINKS_SERVICE_URL
-          value: "http://dummy-links-service.local"
-        - name: SERVICE_ENCOUNTERS_URL
-          value: "http://dummy-service-encounters.local"
-        - name: SOCKER_URL
-          value: "http://dummy-socker.local"
-        - name: TENANT_MIDDLEWARE_URL
-          value: "http://dummy-tenant-middleware.local"
-        - name: TRON_URL
-          value: "http://dummy-tron.local"
-        - name: WORKER_GUEST_SESSION_URL
-          value: "http://dummy-worker-guest-session.local"
-        - name: ABANDONED_CHAT_TIMEOUT_MINUTES
-          value: "10"
-        - name: API_FF_USE_CACHING
-          value: "false"
-        - name: CR_API_DEMOGRAPHICS_URL
-          value: "https://dummy-api-demographics.com"
-        - name: CR_API_MESSAGES_URL
-          value: "https://dummy-api-messages.com"
-        - name: CR_EDGE_API_ADMIN_URL
-          value: "https://dummy-edge-api-admin.com"
-        - name: CR_LINKS_SERVICE_URL
-          value: "https://dummy-links-service.com"
-        - name: CR_VAULT_ENDPOINT
-          value: "https://dummy-vault.com"
-        - name: CR_VAULT_ENV
-          value: "dummy-env"
-        - name: DISABLE_AGGREGATE_UPDATES
-          value: "true"
-        - name: ENABLE_BROADCAST_ALL_AGENT_STATUS_CHECK
-          value: "true"
-        - name: ENABLE_CHAT_HISTORY_FILTERING
-          value: "false"
-        - name: ENABLE_CLIENT_AUTH
-          value: "false"
-        - name: ENABLE_EA_PLUGINS_DAY2
-          value: "false"
-        - name: ENABLE_INTEGRATION_EVENTS
-          value: "true"
-        - name: ENV_DOMAIN
-          value: "dummy-api-cc.local"
-        - name: HISTORY_USE_ORGANIZATION_CACHING
-          value: "false"
-        - name: LOG_LEVEL
-          value: "info"
-        - name: LOG_MESSAGE_KEY
-          value: "message"
-        - name: NEW_RELIC_ERROR_COLLECTOR_IGNORE_ERROR_CODES
-          value: "500"
-        - name: NODE_ENV
-          value: "development"
-        - name: POSTGRES_DATABASE
-          value: "dummy-db"
-        - name: QUEUE_COUNTS_MAP_CACHE_TTL_IN_MS
-          value: "1000"
-        - name: SWAGGER_ENABLED
-          value: "false"
-        - name: TWILIO_ACCOUNT_SID
-          value: "ACdummyaccountsid"
-        - name: TWILIO_FROM_NUMBER
-          value: "+1234567890"
+        env:
+          - name: NEW_RELIC_APP_NAME
+            value: "dummy-app-name"
+          - name: NEW_RELIC_LABELS
+            value: "env:dummy;app:example"
+          - name: NEW_RELIC_IGNORING_RULES
+            value: "^/dummy/.*$,^/test/.*$"
+          - name: NEW_RELIC_NO_CONFIG_FILE
+            value: "true"
+          - name: TITAN_PLATFORM_EXTERNAL_ID
+            value: "dummy-id-12345"
+          - name: PAGER_ENVIRONMENT
+            value: "dummy-env"
+          - name: API_BOTS_URL
+            value: "http://dummy-api-bots.local"
+          - name: API_DEMOGRAPHICS_URL
+            value: "http://dummy-api-demographics.local"
+          - name: API_FF_URL
+            value: "http://dummy-api-ff.local"
+          - name: API_GATEWAY_ADMIN
+            value: "http://dummy-api-gateway.local"
+          - name: API_MESSAGES_URL
+            value: "http://dummy-api-messages.local"
+          - name: API_TWILIO_URL
+            value: "http://dummy-api-twilio.local"
+          - name: EDGE_API_ADMIN_URL
+            value: "http://dummy-edge-api-admin.local"
+          - name: EDGE_API_CC_URL
+            value: "http://dummy-edge-api-cc.local"
+          - name: LINKS_SERVICE_URL
+            value: "http://dummy-links-service.local"
+          - name: SERVICE_ENCOUNTERS_URL
+            value: "http://dummy-service-encounters.local"
+          - name: SOCKER_URL
+            value: "http://dummy-socker.local"
+          - name: TENANT_MIDDLEWARE_URL
+            value: "http://dummy-tenant-middleware.local"
+          - name: TRON_URL
+            value: "http://dummy-tron.local"
+          - name: WORKER_GUEST_SESSION_URL
+            value: "http://dummy-worker-guest-session.local"
+          - name: ABANDONED_CHAT_TIMEOUT_MINUTES
+            value: "10"
+          - name: API_FF_USE_CACHING
+            value: "false"
+          - name: CR_API_DEMOGRAPHICS_URL
+            value: "https://dummy-api-demographics.com"
+          - name: CR_API_MESSAGES_URL
+            value: "https://dummy-api-messages.com"
+          - name: CR_EDGE_API_ADMIN_URL
+            value: "https://dummy-edge-api-admin.com"
+          - name: CR_LINKS_SERVICE_URL
+            value: "https://dummy-links-service.com"
+          - name: CR_VAULT_ENDPOINT
+            value: "https://dummy-vault.com"
+          - name: CR_VAULT_ENV
+            value: "dummy-env"
+          - name: DISABLE_AGGREGATE_UPDATES
+            value: "true"
+          - name: ENABLE_BROADCAST_ALL_AGENT_STATUS_CHECK
+            value: "true"
+          - name: ENABLE_CHAT_HISTORY_FILTERING
+            value: "false"
+          - name: ENABLE_CLIENT_AUTH
+            value: "false"
+          - name: ENABLE_EA_PLUGINS_DAY2
+            value: "false"
+          - name: ENABLE_INTEGRATION_EVENTS
+            value: "true"
+          - name: ENV_DOMAIN
+            value: "dummy-api-cc.local"
+          - name: HISTORY_USE_ORGANIZATION_CACHING
+            value: "false"
+          - name: LOG_LEVEL
+            value: "info"
+          - name: LOG_MESSAGE_KEY
+            value: "message"
+          - name: NEW_RELIC_ERROR_COLLECTOR_IGNORE_ERROR_CODES
+            value: "500"
+          - name: NODE_ENV
+            value: "development"
+          - name: POSTGRES_DATABASE
+            value: "dummy-db"
+          - name: QUEUE_COUNTS_MAP_CACHE_TTL_IN_MS
+            value: "1000"
+          - name: SWAGGER_ENABLED
+            value: "false"
+          - name: TWILIO_ACCOUNT_SID
+            value: "ACdummyaccountsid"
+          - name: TWILIO_FROM_NUMBER
+            value: "+1234567890"
