@@ -4,13 +4,13 @@ metadata:
   name: example-deployment
   labels:
     app: nginx
-  annotations:
-    some.annotation: "true"
+  # annotations:
+  #   some.annotation: "true"
 spec:
-  template:
-    metadata:
-      annotations:
-        some.annotation: "true"
+  # template:
+  #   metadata:
+  #     annotations:
+  #       some.annotation: "true"
   replicas: 1
   selector:
     matchLabels:
