@@ -1,7 +1,8 @@
-apiVersion: "argoproj.io/v1alpha1"
-kind: "Application"
+HarnessManaged: "true"
 metadata:
   name: "guestbook"
+apiVersion: "argoproj.io/v1alpha1"
+kind: "Application"
 spec:
   destination:
     server: "https://kubernetes.default.svc"
