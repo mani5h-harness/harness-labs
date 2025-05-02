@@ -1,4 +1,7 @@
 {
   "harnessPR" : "harnessChanged",
-  "abc" : "456"
+  "abc" : "456",
+  "appName": "guestbook",
+  "namespace: "austin-gitops-demo",
+  "project": "2d97e61f"
 }
