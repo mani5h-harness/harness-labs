@@ -1,4 +1,4 @@
-HarnessManaged: "true"
+HarnessManaged: "false"
 metadata:
   name: "guestbook"
 apiVersion: "argoproj.io/v1alpha1"
