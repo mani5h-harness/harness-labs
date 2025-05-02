@@ -26,11 +26,11 @@ spec:
           - appName: guestbook
             namespace: austin-gitops-demo
             project: 2d97e61f
-  - git:
-      repoURL: https://github.com/austinthao5/harness-labs.git
-      revision: HEAD
-      files:
-      - path: "gitops-applications/configs/guestbook.json"
+    - git:
+        repoURL: https://github.com/austinthao5/harness-labs.git
+        revision: HEAD
+        files:
+        - path: "gitops-applications/configs/guestbook.json"
   template:
     metadata:
       name: '{{appName}}-{{harnessPR}}'
