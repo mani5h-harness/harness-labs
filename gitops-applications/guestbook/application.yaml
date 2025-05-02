@@ -26,6 +26,7 @@ spec:
           - appName: guestbook
             namespace: austin-gitops-demo
             project: 2d97e61f
+            abc: changeMe
   template:
     metadata:
       name: '{{appName}}'
