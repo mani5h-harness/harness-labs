@@ -1,18 +1,44 @@
-HarnessManaged: "false"
+# apiVersion: "argoproj.io/v1alpha1"
+# kind: "Application"
+# metadata:
+#   name: "guestbook"
+# spec:
+#   destination:
+#     server: "https://kubernetes.default.svc"
+#     namespace: "austin-argocd"
+#   project: "2d97e61f"
+#   source:
+#     repoURL: "https://github.com/austinthao5/harness-labs.git"
+#     path: "gitops/guestbook"
+#     targetRevision: "main"
+#   syncPolicy:
+#     automated:
+#       selfHeal: true
+#       prune: true
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
 metadata:
-  name: "guestbook"
-apiVersion: "argoproj.io/v1alpha1"
-kind: "Application"
+  name: guestbook-appset
 spec:
-  destination:
-    server: "https://kubernetes.default.svc"
-    namespace: "austin-argocd"
-  project: "2d97e61f"
-  source:
-    repoURL: "https://github.com/austinthao5/harness-labs.git"
-    path: "gitops/guestbook"
-    targetRevision: "main"
-  syncPolicy:
-    automated:
-      selfHeal: true
-      prune: true
+  generators:
+    - list:
+        elements:
+          - appName: guestbook
+            namespace: austin-gitops-demo
+            project: 2d97e61f
+  template:
+    metadata:
+      name: '{{appName}}'
+    spec:
+      project: '{{project}}'
+      source:
+        repoURL: https://github.com/austinthao5/harness-labs.git
+        path: gitops/guestbook
+        targetRevision: main
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: true
