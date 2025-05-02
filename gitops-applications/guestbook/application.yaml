@@ -33,7 +33,7 @@ spec:
       - path: "gitops-applications/configs/guestbook.json"
   template:
     metadata:
-      name: '{{appName}}-{{.harnessPR}}'
+      name: '{{appName}}-{{harnessPR}}'
     spec:
       project: '{{project}}'
       source:
