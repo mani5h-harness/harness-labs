@@ -156,3 +156,5 @@ spec:
             value: "ACdummyaccountsid"
           - name: NEW_ENV_VAR
             value: "FIND_ME"
+          - name: TWILIO_FROM_NUMBER
+            value: "1234567890"
