@@ -156,3 +156,5 @@ spec:
             value: "ACdummyaccountsid"
           - name: NEW_ENV_VAR
             value: "FIND_ME"
+          - name: ANOTHER_NEW_ENV
+            value: "FIND_ME2"
