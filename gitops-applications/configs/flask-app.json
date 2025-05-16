@@ -2,6 +2,6 @@
   "namespace" : "austin-gitops-demo",
   "project" : "2d97e61f",
   "abc" : "456",
-  "harnessPR" : "PipelineExecution9",
+  "harnessPR" : "PipelineExecution10",
   "appName" : "flask-app"
 }
