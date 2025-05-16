@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: flask-container
-          image: your-docker-registry/your-org/simple-flask:latest
+          image: austinthao/flask-app:v1
           ports:
             - containerPort: 80
