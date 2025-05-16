@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-flask
+  labels:
+    app: simple-flask
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simple-flask
+  template:
+    metadata:
+      labels:
+        app: simple-flask
+    spec:
+      containers:
+        - name: flask-container
+          image: your-docker-registry/your-org/simple-flask:latest
+          ports:
+            - containerPort: 80
