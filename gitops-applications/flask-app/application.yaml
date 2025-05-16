@@ -12,6 +12,9 @@ spec:
   template:
     metadata:
       name: '{{appName}}'
+      labels: 
+        harness.io/envRef: '{{envTag}}'
+        harness.io/serviceRef: '{{serviceTag}}'
     spec:
       project: '{{project}}'
       source:
