@@ -1,7 +1,7 @@
 {
-  "abc" : "456",
-  "appName" : "guestbook",
   "namespace" : "austin-gitops-demo",
   "project" : "2d97e61f",
-  "harnessPR" : "harnessChanged"
+  "abc" : "456",
+  "harnessPR" : "PipelineExecution3",
+  "appName" : "guestbook"
 }
