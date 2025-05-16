@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: guestbook-appset
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/austinthao5/harness-labs.git
+        revision: HEAD
+        files:
+        - path: "gitops-applications/configs/guestbook.json"
+  template:
+    metadata:
+      name: '{{appName}}'
+    spec:
+      project: '{{project}}'
+      source:
+        repoURL: https://github.com/austinthao5/harness-labs.git
+        path: gitops/flask-app
+        targetRevision: main
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: true
