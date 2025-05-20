@@ -1,5 +1,5 @@
 namespace: "austin-gitops-demo"
-project: "2d97e61f"
+project: "3164c471"
 abc: "456"
 harnessPR: "PipelineExecution3"
 appName: "guestbook"
