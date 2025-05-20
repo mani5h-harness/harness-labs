@@ -1,5 +1,5 @@
-namespace: "austin-gitops-demo"
+namespace: "austin-argocd"
 project: "3164c471"
 abc: "abc"
-harnessPR: "ChageMe24"
+harnessPR: "ChageMe25"
 appName: "guestbook"
