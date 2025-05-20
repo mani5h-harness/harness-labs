@@ -8,7 +8,7 @@ spec:
         repoURL: https://github.com/austinthao5/harness-labs.git
         revision: HEAD
         files:
-        - path: "gitops-applications/configs/guestbook.yaml"
+        - path: "gitops-applications/configs/guestbook.json"
   template:
     metadata:
       name: '{{appName}}'
