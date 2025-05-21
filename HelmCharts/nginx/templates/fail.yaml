@@ -1,1 +1,16 @@
-{{ fail "💥 Upgrade intentionally failed in Harness." }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: fail-upgrade-hook
+  annotations:
+    "helm.sh/hook": post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  template:
+    spec:
+      containers:
+        - name: fail
+          image: busybox
+          command: ["/bin/sh", "-c"]
+          args: ["echo 'failing post-upgrade'; exit 1"]
+      restartPolicy: Never
