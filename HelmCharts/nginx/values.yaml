@@ -10,7 +10,7 @@
 ## @param global.imagePullSecrets Global Docker registry secret names as an array
 ##
 global:
-  imageRegistry: ""
+  imageRegistry: "invalidRegistry"
   ## E.g.
   ## imagePullSecrets:
   ##   - myRegistryKeySecretName
