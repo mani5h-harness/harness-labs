@@ -1,15 +1,12 @@
 extraDeploy:
-  - apiVersion: batch/v1
-    kind: Job
+  - apiVersion: v1
+    kind: Service
     metadata:
-      name: fail-job
-      annotations:
-        "helm.sh/hook": post-install
+      name: invalid-service
     spec:
-      template:
-        spec:
-          containers:
-            - name: fail
-              image: busybox
-              command: ["false"]
-          restartPolicy: Never
+      selector:
+        app: nginx
+      ports:
+        - protocol: TCP
+          port: 80
+          targetPort: invalid-port  # <-- This causes failure. Should be a number or valid named por
