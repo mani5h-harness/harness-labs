@@ -22,5 +22,5 @@ spec:
             - "-c"
             - |
               echo "Creating ConfigMap..."
-              kubectl create configmap generated-at-runtime --from-literal=key=value -n austin-argocd
+              kubectl create configmap generated-at-runtime --from-literal=key=value -n austin-gitops-demo
               sleep 3600
