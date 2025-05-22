@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sample-dynamic-configmap-app
+  namespace: austin-argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/austinthao5/harness-labs.git
+    targetRevision: HEAD
+    path: gitops/configMapDeployer
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: demo
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
