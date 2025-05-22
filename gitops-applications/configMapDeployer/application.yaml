@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: sample-dynamic-configmap-app
-  namespace: austin-gitops-demo
+  namespace: austin-prod1-agent
 spec:
   project: default
   source:
