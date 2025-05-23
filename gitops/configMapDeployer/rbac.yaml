@@ -2,7 +2,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: configmap-creator
-  namespace: austin-prod1-agent
+  namespace: test1mani
 rules:
   - apiGroups: [""]
     resources: ["configmaps"]
@@ -12,7 +12,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: configmap-creator-binding
-  namespace: austin-prod1-agent
+  namespace: test1mani
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
