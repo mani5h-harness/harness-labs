@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: guestbook
-  namespace: austin-argocd
+  namespace: kube-system
 spec:
   project: 3164c471
   source:
