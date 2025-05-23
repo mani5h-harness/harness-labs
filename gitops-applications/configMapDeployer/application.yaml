@@ -16,8 +16,8 @@ spec:
     automated:
       prune: false
       selfHeal: false
-  ignoreDifferences:
-    - group: ""
-      kind: ConfigMap
-      name: generated-at-runtime
-      namespace: austin-prod1-agent
+  resourceOverrides:
+    ConfigMap:
+      ignoreDifferences:
+        - jsonPointers:
+            - /data
