@@ -19,5 +19,8 @@ spec:
   resourceOverrides:
     ConfigMap:
       ignoreDifferences:
-        - jsonPointers:
-            - /data
+        - name: generated-at-runtime
+          namespace: austin-prod1-agent
+          jsonPointers:
+            - "/"
+
