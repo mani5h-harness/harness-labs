@@ -11,7 +11,7 @@ spec:
     path: gitops/configMapDeployer
   destination:
     server: https://kubernetes.default.svc
-    namespace: demo
+    namespace: austin-prod1-agent
   syncPolicy:
     automated:
       prune: false
@@ -22,7 +22,3 @@ spec:
       namespace: austin-prod1-agent
       jsonPointers:
         - "/"
-  ignoreResources:
-    - kind: ConfigMap
-      name: generated-at-runtime
-      namespace: austin-prod1-agent
