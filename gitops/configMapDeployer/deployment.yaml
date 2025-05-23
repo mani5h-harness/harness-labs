@@ -23,5 +23,5 @@ spec:
             - "-c"
             - |
               echo "Creating ConfigMap..."
-              kubectl create configmap generated-at-runtime --from-literal=key=value -n austin-prod1-agent
+              kubectl create configmap generated-at-runtime --from-literal=key=value -n test1mani
               sleep 3600
