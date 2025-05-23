@@ -5,3 +5,4 @@ metadata:
   namespace: test1mani
 data:
   key: original
+  sec: bla
