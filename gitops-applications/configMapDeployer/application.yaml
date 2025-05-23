@@ -12,10 +12,6 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: austin-prod1-agent
-  syncPolicy:
-    automated:
-      prune: false
-      selfHeal: false
   ignoreDifferences:
     - kind: ConfigMap
       name: generated-at-runtime
