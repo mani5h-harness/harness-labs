@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: your-org/configmap-creator:latest
+          image: bitnami/kubectl:latest
           command: ["/bin/sh"]
           args:
             - "-c"
