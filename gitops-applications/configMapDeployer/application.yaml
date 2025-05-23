@@ -16,3 +16,8 @@ spec:
     automated:
       prune: false
       selfHeal: true
+  ignoreDifferences:
+    - group: ""
+      kind: ConfigMap
+      name: generated-at-runtime
+      namespace: austin-prod1-agent
